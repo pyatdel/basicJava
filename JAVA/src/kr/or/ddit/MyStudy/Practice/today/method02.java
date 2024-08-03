@@ -1,5 +1,5 @@
 package kr.or.ddit.MyStudy.Practice.today;
 
-public class TriangleMain {
+public class method02 {
 
 }

@@ -17,7 +17,7 @@ public class MapExample03 {
 	public void process() {
 		List<Map<String, Object>> list = insertData();
 		printData(list);
-		parkTime(list);
+//		parkTime(list);
 	}
 	
 	public void parkTime(List<Map<String, Object>> list) {
@@ -32,7 +32,9 @@ public class MapExample03 {
 		Iterator<String> it = carSet.iterator();
 		while(it.hasNext()) {
 			String key = it.next();
+//			총 주차 시간
 			int sum = partTimeDetail(list, key);
+//			주차 요금
 			int money = getMoney(sum);
 			List<Map<String, Object>> parkList = parkList(list, key);
 			
@@ -42,11 +44,17 @@ public class MapExample03 {
 //			주차 시간
 //			주차 요금
 //			상세 주차 내역
+			
+			
+			
+//			______________________________________
 		}
 	}
 	
 	public List<Map<String, Object>> parkList(List<Map<String, Object>> list
 			, String carNum_){
+		
+		
 		
 		
 		return null;
@@ -60,8 +68,14 @@ public class MapExample03 {
 //		기본 시간		기본 요금		단위 시간		단위 요금
 //		180분		5000		10분			600원
 //		200분 -> 5000 + 600 * 2 -> 6200원
+//		201분 -> 5000 + 600 * 3 -> 
+		if(time<=180) return 5000;
+	
+		return 5000+(time-180)/10*600;
 		
-		return 0;
+		
+		
+//		_____________________________________________________
 	}
 	
 	public int partTimeDetail(List<Map<String, Object>> list, String carNum_ ) {
