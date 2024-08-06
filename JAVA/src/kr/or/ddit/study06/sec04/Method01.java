@@ -15,5 +15,5 @@ public class Method01 {
 	public void method1(int a, int b) {
 		System.out.println("void method1(int a, int b)");
 	}
-	Singleton
+	
 }

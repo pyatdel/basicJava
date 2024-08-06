@@ -37,7 +37,5 @@ public class Method03 {
 		System.out.println("ㅁㅁㅁㅁ");
 //		void 형식을 사용할 때, return 사용 방법
 		return ;
-	}
-	
-	
+	}	
 }
