@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="test.jsp" method="post">
+		
+		이름: <input value="이유진" name="erum">	<br>
+		
+		<label for="userNM">이름</label>
+		<label value="이유진" name="erum"> <br>
+		
+		별명: <input name="alias"> <br>
+		취미: 
+		html<input type='checkbox' value="HTML" name="chk"> 
+		css<input type='checkbox' value="CSS" name="chk"> 
+		js<input type='checkbox' value="JAVASCRIPT" name="chk" checked> 
+		서버<input type='checkbox' value="SERVER" name="chk"> 
+		자바<input type='checkbox' value="JAVA" name="chk"> <br><br>
+		
+<!--
+		get방식으로 요청이 전달될 때 queryString의 형태로 전달된다
+		url?name으로 설정한 정보=입력양식에 입력된 값
+-->
+		<input type="submit" value="서브밋">
+		<input type="button" value="버튼이다" onclick="f_btn()">
+		<input type="image" src="../image//btn.PNG">
+<!--		<input type="reset">-->
+<!--		폼 내부에서는 전송 기능을 갖음-->
+<!--		폼 내부의 button이라도 type="button"일때는 기능 없음으로 돌아감-->
+		<button>폼안쪽button</button>
+	</form>
+	<button>폼바깥쪽button</button> <!--폼 외부에서는 순수한 버튼으로 사용-->
+<script>
+	// 함수 선언
+	<!--function 함수명(){}-->
+	function f_btn(){
+		// alert("아무거나..."); // 경고 팝업창
+		// 제출 기능을 표현
+		console.log(getElementsByTagName('form')); // front 작업에서의 디버깅에 유용한 함수
+		document.getElementsByTagName('form')[0].submit();
+		
+	}
+</script>	
+</body>
+</html>
