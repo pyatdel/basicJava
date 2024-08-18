@@ -13,7 +13,7 @@ public class JsoupUtil {
 		Document doc = null;
 		try {
 			doc = Jsoup.connect(url).get();
-			Thread.sleep(1000);
+//			Thread.sleep(1000);
 			return doc.html();
 		} catch (Exception e) {
 			e.printStackTrace();

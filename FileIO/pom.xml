@@ -30,5 +30,12 @@
 			<artifactId>ojdbc11</artifactId>
 			<version>23.2.0.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-scratchpad -->
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-scratchpad</artifactId>
+    <version>5.2.5</version>
+</dependency>
+
 	</dependencies>
 </project>
