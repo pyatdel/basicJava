@@ -14,7 +14,7 @@ public class F10BufferInputStream {
 		try {
 			FileInputStream fis = new FileInputStream("E:/test/javaCopy.txt");
 			
-			// 지정 하지 않으면 기본 사이즈 8192
+			// 지정 하지 않으면 기본 사이즈 8192, 설정하면 처리속도가 빨라진다
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			int data =0; 
 			while((data = bis.read()) !=-1) {
