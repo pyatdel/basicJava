@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<people name ="강유정" age="20"> </people>
+	<people>
+	<![CDATA[  <!--문자를 그대로 해석-->
+		<name> "양소현"
+<!-- 			<firstname>양</firstname> -->
+<!-- 			<second>소현</second> -->
+		</name>
+		<age>20</age>
+		 ]]>
+	</people>
+</root>
