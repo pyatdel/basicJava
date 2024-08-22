@@ -19,16 +19,24 @@ public class Step4Listpage_Thread {
 		sl.process();
 	}
 
-	ExecutorService exe = Executors.newFixedThreadPool(10);
+	ExecutorService exe = Executors.newFixedThreadPool(1);
 	
 	public void process() {
 
 		File root = new File("yes24/step4");
 
+		boolean chk = false;
 		for (File bigMenu : root.listFiles()) {
 			System.out.println("대메뉴 : " + bigMenu);
+			if(bigMenu.getName().contains("자기계발")) continue;
+			if(bigMenu.getName().contains("자연과학")) continue;
+			if(bigMenu.getName().contains("잡지")) continue;
+			if(bigMenu.getName().contains("전집")) continue;
+			if(bigMenu.getName().contains("중등참고서")) continue;
 			for (File middle : bigMenu.listFiles()) {
 				System.out.println("\t중메뉴 : " + middle);
+//				if(middle.getName().contains("초등 중학년")) chk = true;
+//				if(!chk) continue;
 				for (File f : middle.listFiles()) {
 					System.out.println("\t\t리스트 : " + f);
 					String folder = f.getPath().replace("step4", "step5").replace(".html", "");
@@ -56,7 +64,7 @@ public class Step4Listpage_Thread {
 	}
 	
 	public String changeName(String name) {
-		String[] change = {"&amp;", ":", "?","/","\""};
+		String[] change = {"&amp;", ":", "?","/","\"","|","*"};
 		for(String c : change) name = name.replace(c, "");
 		return name;
 	}
@@ -102,9 +110,16 @@ class ThreadJob extends Thread{
 	@Override
 	public void run() {
 		String url = JsoupUtil.rootUrl + href;
-		String html = JsoupUtil.getHtml(url);
-		if(html.equals("")) return;
 		try {
+			String html ="";
+			try {
+				
+				html = JsoupUtil.getHtml(url);
+			} catch (Exception e) {
+			}
+			if(html.equals("")) {
+				html = JsoupUtil.getHtml(url);
+			}
 			Files.write(Paths.get(file.getPath()), html.getBytes());
 			System.out.println("\t\t\t 파일 : "+file);
 		} catch (IOException e) {
