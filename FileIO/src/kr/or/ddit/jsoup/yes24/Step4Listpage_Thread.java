@@ -19,7 +19,7 @@ public class Step4Listpage_Thread {
 		sl.process();
 	}
 
-	ExecutorService exe = Executors.newFixedThreadPool(1);
+	ExecutorService exe = Executors.newFixedThreadPool(16); // 스레드 만들 갯수를 최적화(속도 차이)
 	
 	public void process() {
 
@@ -33,6 +33,9 @@ public class Step4Listpage_Thread {
 			if(bigMenu.getName().contains("잡지")) continue;
 			if(bigMenu.getName().contains("전집")) continue;
 			if(bigMenu.getName().contains("중등참고서")) continue;
+			if(bigMenu.getName().contains("종교")) continue;
+			if(bigMenu.getName().contains("청소년")) continue;
+			if(bigMenu.getName().contains("중고등참고서")) continue;
 			for (File middle : bigMenu.listFiles()) {
 				System.out.println("\t중메뉴 : " + middle);
 //				if(middle.getName().contains("초등 중학년")) chk = true;
@@ -51,7 +54,7 @@ public class Step4Listpage_Thread {
 						String href = map.get("href");
 						File file = new File(dir, name + ".html");
 						if (file.length() !=0 && file.exists()) continue;
-						exe.execute(new ThreadJob(href, file));
+						exe.execute(new ThreadJob(href, file)); // execute 동작(스레드)
 					}
 //					try {
 //						exe.wait();
