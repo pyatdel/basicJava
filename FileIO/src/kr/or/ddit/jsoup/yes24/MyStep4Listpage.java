@@ -11,9 +11,9 @@ import java.util.Map;
 
 import kr.or.ddit.jsoup.JsoupUtil;
 
-public class Step4Listpage {
+public class MyStep4Listpage {
 	public static void main(String[] args) {
-		Step4Listpage sl = new Step4Listpage();
+		MyStep4Listpage sl = new MyStep4Listpage();
 		sl.process();
 	}
 
@@ -35,16 +35,22 @@ public class Step4Listpage {
 					List<Map<String, String>> list = parser(f);
 					for (Map<String, String> map : list) {
 						String name = map.get("name");
-						name = changeName(name);
+						name = name.replace("&amp;", "&").replace(":", "").replace("?", "").replace("\\", "")
+					               .replace("/", "").replace("*", "").replace("\"", "").replace("<", "")
+					               .replace(">", "").replace("|", "");
+//						name = changeName(name);
+						
+						
 						String href = map.get("href");
 						File file = new File(dir, name + ".html");
 						if (file.exists()) continue;
 						String url = JsoupUtil.rootUrl + href;
 						String html = JsoupUtil.getHtml(url);
 						try {
-							Files.write(Paths.get(file.getPath()), html.getBytes());
+						    // UTF-8로 파일을 저장합니다.
+						    Files.write(Paths.get(file.getPath()), html.getBytes(java.nio.charset.StandardCharsets.UTF_8));
 						} catch (IOException e) {
-							e.printStackTrace();
+						    e.printStackTrace();
 						}
 					}
 				}
@@ -53,38 +59,31 @@ public class Step4Listpage {
 	}
 	
 	public String changeName(String name) {
-		String[] change = {"&amp;", ":", "?","/"};
+		String[] change = {"&amp;", ":", "?", "/"};
 		for(String c : change) name = name.replace(c, "");
 		return name;
 	}
-	
-	
 
 	public List<Map<String, String>> parser(File f) {
-		List<Map<String, String>> list = new ArrayList();
-		try {
-			String html = Files.readString(Paths.get(f.getPath()));
-			if ((html.equals(""))) {
-				System.out.println("html 수집 에러");
-			}
-			String[] lines = html.split("\n");
-			for (String line : lines) {
-				//
-				if (line.contains("gd_nameF")) {
-//			        <span class="gd_nameF"></span> <a href="/Product/Goods/76899643">로지컬 씽킹
-					String temp = line.split("</a>")[0];
-					String href = temp.split("href=\"")[1].split("\"")[0];
-					String name = temp.split(">")[3];
-					Map<String, String> map = new HashMap();
-					map.put("name", name);
-					map.put("href", href);
-					list.add(map);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return list;
+	    List<Map<String, String>> list = new ArrayList<>();
+	    try {
+	        // UTF-8로 파일을 읽어옵니다.
+	        List<String> lines = Files.readAllLines(Paths.get(f.getPath()), java.nio.charset.StandardCharsets.UTF_8);
+	        for (String line : lines) {
+	            if (line.contains("gd_nameF")) {
+	                String temp = line.split("</a>")[0];
+	                String href = temp.split("href=\"")[1].split("\"")[0];
+	                String name = temp.split(">")[3];
+	                Map<String, String> map = new HashMap<>();
+	                map.put("name", name);
+	                map.put("href", href);
+	                list.add(map);
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return list;
 	}
 
 }
