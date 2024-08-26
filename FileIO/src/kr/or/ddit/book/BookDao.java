@@ -37,7 +37,5 @@ public class BookDao {
 		return jdbc.selectList(sql, BookVo.class);
 	}
 	
-	
-	
-	
+
 }
