@@ -33,8 +33,8 @@ public class E2ExcelRead {
 				int endCell = row.getLastCellNum();
 				for(int j=startCell; j<=endCell; j++) {
 					Cell cell = row.getCell(j);
-					String data = ExcelUtil.getCellData(cell);
-					System.out.print(data+"\t");
+//					String data = ExcelUtil.getCellData(cell);
+//					System.out.print(data+"\t");
 				}
 				System.out.println();
 			}

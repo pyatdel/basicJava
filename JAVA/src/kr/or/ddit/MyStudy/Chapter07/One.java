@@ -17,8 +17,8 @@ public class One {
 	
 		
 		
-		public Parent(String name) {
-			this.name = name;
-		}
+//		public Parent(String name) {
+//			this.name = name;
+//		}
 	}
 }
