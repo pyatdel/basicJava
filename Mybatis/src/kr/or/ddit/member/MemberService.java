@@ -24,16 +24,15 @@ public class MemberService {
 	}
 	
 	
-//	public MemberVo getMember(MemberVo member) {
-//		return memberDao.getMember(member);
-//	}
-	
-	public MemberVo getMember(HashMap member) {
+	public MemberVo getMember(MemberVo member) {
 		return memberDao.getMember(member);
 	}
 	
-	public void insertMember(MemberVo member) {
-		memberDao.insertMember(member);
+	public int insertMember(MemberVo member) {
+		return memberDao.insertMember(member);
+	}
+	public void updateMember(MemberVo member) {
+		memberDao.updateMember(member);
 	}
 	
 }

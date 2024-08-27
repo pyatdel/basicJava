@@ -5,7 +5,9 @@
 <configuration>
 
 	<properties resource="db.properties" />
-	
+	<typeAliases>
+		<typeAlias type="kr.or.ddit.member.MemberVo" alias="MemberVo" />
+	</typeAliases>
 	<!-- 
 	    POOLED : MyBatis 자체 DB 커넥션을 사용한다.
 	                        미리 DB 커넥션 객체를 생성해 두고 요청하면 즉시 반환한다.
@@ -28,9 +30,10 @@
 		</environment>
 	</environments>
 	
-	
+
 	<mappers>
 		<mapper resource="mapper/member.xml" />
+		<mapper resource="mapper/board.xml" />
 	</mappers>
 
 </configuration>

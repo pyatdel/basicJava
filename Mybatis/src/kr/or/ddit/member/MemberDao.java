@@ -26,18 +26,17 @@ public class MemberDao extends MyBatisDao {
 	}
 	
 	
-//	public MemberVo getMember(MemberVo member) {
-//		return selectOne("member.getMember", member);
-//	}
-	
-	
-	public MemberVo getMember(HashMap member) {
+	public MemberVo getMember(MemberVo member) {
 		return selectOne("member.getMember", member);
 	}
 	
-	public void insertMember(MemberVo member) {
-		insert("member.insertMember", member);
+	public int insertMember(MemberVo member) {
+		return insert("member.insertMember", member);
 		
+	}
+	
+	public void updateMember(MemberVo member) {
+		update("member.updateMember", member);
 	}
 	
 	

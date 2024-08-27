@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="member">
+<mapper namespace="board">
 	
 	<!-- 
 	
@@ -24,39 +24,7 @@
 	                                위해 사용한다.
 	 -->
 
-	<select id="getAll" resultType="kr.or.ddit.member.MemberVo">
-		SELECT * 
-		FROM MEMBER
-	</select>
 	
-	<select id="getMember" resultType="kr.or.ddit.member.MemberVo" parameterType="hashmap">
-		SELECT * 
-		FROM MEMBER 
-		WHERE  ID = #{id} 
-		AND    PW = #{pw} 
-	</select>
-	
-	<insert id="insertMember" parameterType="kr.or.ddit.member.MemberVo">
-		INSERT INTO MEMBER
-		VALUES ( (SELECT MAX(MEM_NO)+1 FROM MEMBER ), 
-		         #{id}, #{pw}, #{name}, sysdate, 'N')  
-	
-	</insert>
-	
-	<update id = "updateMember">
-		UPDADTE MEMBER
-		SET
-			<if test = "pw !=null and pw!=''">
-				PW = #{pw}
-			
-			</if>
-			<if test = "name !=null and name!=''">
-				NAME = #{name}
-			
-			</if>
-		WHERE MEM_NO = #{mem_no}
-	
-	</update>
 	
 	
 

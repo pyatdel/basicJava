@@ -17,9 +17,11 @@ public class StaticExample {
 	public static void method3() {
 		a=10;
 //		b=10;
+		method4();
 //		method1();
 	}
 	
-//	public static void method4();
-//}
+	public static void method4() {
+		
+	}
 }

@@ -2,6 +2,7 @@ package kr.or.ddit.MyStudy.Practice.today;
 
 public class StudentMain {
 	public static void main(String[] args) {
+		
 		Student.year = 2023;
 		
 		Student s1 = new Student();

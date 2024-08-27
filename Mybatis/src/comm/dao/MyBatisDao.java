@@ -62,11 +62,13 @@ public class MyBatisDao {
 	
 	public int update(String statement, Object parameter) {
 		int cnt = 0; 
-		SqlSession session = MybatisUtil.getInstance(true);
+		SqlSession session = MybatisUtil.getInstance();
 		try {
 			cnt = session.update(statement, parameter);
+			session.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
+			session.rollback();
 		}finally {
 			session.close();
 		}
@@ -75,11 +77,13 @@ public class MyBatisDao {
 	
 	public int update(String statement) {
 		int cnt = 0; 
-		SqlSession session = MybatisUtil.getInstance(true);
+		SqlSession session = MybatisUtil.getInstance();
 		try {
 			cnt = session.update(statement);
+			session.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
+			session.rollback();
 		}finally {
 			session.close();
 		}
@@ -88,11 +92,13 @@ public class MyBatisDao {
 	
 	public int insert(String statement, Object parameter) {
 		int cnt = 0; 
-		SqlSession session = MybatisUtil.getInstance(true);
+		SqlSession session = MybatisUtil.getInstance();
 		try {
 			cnt = session.insert(statement, parameter);
+			session.commit();
 		}catch (Exception e) {
 			e.printStackTrace();
+			session.rollback();
 		}finally {
 			session.close();
 		}
@@ -101,11 +107,13 @@ public class MyBatisDao {
 	
 	public int insert(String statement) {
 		int cnt = 0; 
-		SqlSession session = MybatisUtil.getInstance(true);
+		SqlSession session = MybatisUtil.getInstance();
 		try {
 			cnt = session.insert(statement);
+			session.commit();
 		}catch (Exception e) {
 			e.printStackTrace();
+			session.rollback();
 		}finally {
 			session.close();
 		}
@@ -114,11 +122,13 @@ public class MyBatisDao {
 	
 	public int delete(String statement, Object parameter) {
 		int cnt = 0; 
-		SqlSession session = MybatisUtil.getInstance(true);
+		SqlSession session = MybatisUtil.getInstance();
 		try {
 			cnt = session.delete(statement, parameter );
+			session.commit();
 		}catch (Exception e) {
 			e.printStackTrace();
+			session.rollback();
 		}finally {
 			session.close();
 		}
@@ -127,11 +137,13 @@ public class MyBatisDao {
 	
 	public int delete(String statement) {
 		int cnt = 0; 
-		SqlSession session = MybatisUtil.getInstance(true);
+		SqlSession session = MybatisUtil.getInstance();
 		try {
 			cnt = session.delete(statement);
+			session.commit();
 		}catch (Exception e) {
 			e.printStackTrace();
+			session.rollback();
 		}finally {
 			session.close();
 		}
