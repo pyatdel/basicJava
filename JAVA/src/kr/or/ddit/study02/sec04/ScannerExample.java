@@ -1,6 +1,5 @@
 package kr.or.ddit.study02.sec04;
 
-
 import java.util.Scanner;
 
 public class ScannerExample {

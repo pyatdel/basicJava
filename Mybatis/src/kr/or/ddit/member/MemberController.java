@@ -57,8 +57,10 @@ public class MemberController {
 	}
 
 	private View memberDelete() {
-		
-		return null;
+		System.out.println("회원 삭제");
+		String id = ScanUtil.nextLine("삭제할 ID : ");
+		String pw = ScanUtil.nextLine("삭제할 PW : ");
+		return View.MYMENU;
 	}
 
 	private View memberUpdate() {

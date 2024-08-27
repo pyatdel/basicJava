@@ -1,7 +1,5 @@
 package kr.or.ddit.MyStudy.Chapter06;
 
-import java.util.Scanner;
-
 public class Three {
 	String title;
 	String content;

@@ -2,6 +2,8 @@ package kr.or.ddit.study02.sec04;
 
 import java.util.Scanner;
 
+//import java.util.Scanner;
+
 public class PrintExamaple {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);

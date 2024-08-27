@@ -1,4 +1,4 @@
-package kr.or.ddit.jsoup.yes24;
+/*package kr.or.ddit.jsoup.yes24;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -119,4 +119,4 @@ public class Step5Detail {
 		Map<String, String> map = new HashMap(); // 채워넣어야 하는 부분
 		return map;
 	}
-}
+}*/

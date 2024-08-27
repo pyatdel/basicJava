@@ -3,16 +3,15 @@ package util;
 import java.util.Scanner;
 
 public class ScanUtil {
-	// 스캐너 객체를 따로 만들지 않고 스캔유틸 이용할 것
-
 	private static Scanner sc = new Scanner(System.in);
 	
 	public static String nextLine(String message) {
 		System.out.print(message);
 		return sc.nextLine();
 	}
+	
 	public static int nextInt(String message) {
-		System.out.println(message);
+		System.out.print(message);
 		return nextInt();
 	}
 	
@@ -26,4 +25,7 @@ public class ScanUtil {
 			}
 		}
 	}
+	
+	
+	
 }

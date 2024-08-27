@@ -38,7 +38,4 @@ public class MemberDao extends MyBatisDao {
 	public void updateMember(MemberVo member) {
 		update("member.updateMember", member);
 	}
-	
-	
-	
 }

@@ -1,6 +1,7 @@
 package kr.or.ddit.study11;
 
 import java.util.Scanner;
+
 /*
  *  Math 클래스
  * 	수학과 관련된 연산 처리 등을 위한 클래스

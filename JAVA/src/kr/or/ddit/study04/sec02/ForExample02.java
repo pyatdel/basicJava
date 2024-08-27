@@ -1,8 +1,9 @@
 package kr.or.ddit.study04.sec02;
 
+import java.util.Scanner;
+
 //	continue & break문 반드시 익숙해지기!!!
 
-import java.util.Scanner;
 
 public class ForExample02 {
 	Scanner sc = new Scanner(System.in);

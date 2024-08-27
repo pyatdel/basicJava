@@ -1,8 +1,6 @@
 package kr.or.ddit.homework;
 
-
 import java.util.Scanner;
-
 
 public class HomeWork09 {
 	Scanner sc = new Scanner(System.in);

@@ -1,7 +1,6 @@
 package kr.or.ddit.study05.sec02;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class ArrayExample01 {

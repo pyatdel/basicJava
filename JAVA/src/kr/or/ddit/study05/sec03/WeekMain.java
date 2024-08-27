@@ -1,8 +1,7 @@
 package kr.or.ddit.study05.sec03;
 
-import java.util.Scanner;
 
-import kr.or.ddit.study05.sec03.Week;
+import java.util.Scanner;
 
 //alt + shift + j 
 /**
