@@ -38,4 +38,9 @@ public class MemberDao extends MyBatisDao {
 	public void updateMember(MemberVo member) {
 		update("member.updateMember", member);
 	}
+	
+	public void deleteMember(MemberVo member) {
+		delete("member.deleteMember", member);
+	}
+	
 }

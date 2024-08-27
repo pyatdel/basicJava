@@ -35,4 +35,7 @@ public class MemberService {
 		memberDao.updateMember(member);
 	}
 	
+	public void deleteMember(MemberVo member) {
+		return memberDao.deleteMember(member);
+	}
 }

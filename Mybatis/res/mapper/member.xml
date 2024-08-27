@@ -29,7 +29,7 @@
 		FROM MEMBER
 	</select>
 	
-	<select id="getMember" resultType="kr.or.ddit.member.MemberVo" parameterType="hashmap">
+	<select id="getMember" resultType="kr.or.ddit.member.MemberVo" parameterType="MemberVo">
 		SELECT * 
 		FROM MEMBER 
 		WHERE  ID = #{id} 
@@ -43,7 +43,7 @@
 	
 	</insert>
 	
-	<update id = "updateMember">
+	<update id = "updateMember" >
 		UPDADTE MEMBER
 		SET
 			<if test = "pw !=null and pw!=''">
@@ -56,6 +56,14 @@
 			</if>
 		WHERE MEM_NO = #{mem_no}
 	
+	</update>
+	
+	<update id="deleteMember" parameterType = "MemberVo">
+	
+		UPDATE MEMBER
+		SET
+		DElYN = 'Y'
+		WHERE MEM_NO = #{mem_no};
 	</update>
 	
 	
