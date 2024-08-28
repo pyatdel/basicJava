@@ -24,47 +24,39 @@
 	                                위해 사용한다.
 	 -->
 
-	<select id="getAll" resultType="kr.or.ddit.member.MemberVo">
+	<select id="getAll" resultType="MemberVo">
 		SELECT * 
 		FROM MEMBER
 	</select>
 	
-	<select id="getMember" resultType="kr.or.ddit.member.MemberVo" parameterType="MemberVo">
+	<select id="getMember" resultType="MemberVo" parameterType="MemberVo">
 		SELECT * 
 		FROM MEMBER 
 		WHERE  ID = #{id} 
 		AND    PW = #{pw} 
 	</select>
+
 	
-	<insert id="insertMember" parameterType="kr.or.ddit.member.MemberVo">
+	<insert id="insertMember" parameterType="MemberVo">
 		INSERT INTO MEMBER
 		VALUES ( (SELECT MAX(MEM_NO)+1 FROM MEMBER ), 
 		         #{id}, #{pw}, #{name}, sysdate, 'N')  
 	
 	</insert>
 	
-	<update id = "updateMember" >
-		UPDADTE MEMBER
-		SET
-			<if test = "pw !=null and pw!=''">
-				PW = #{pw}
-			
-			</if>
-			<if test = "name !=null and name!=''">
-				NAME = #{name}
-			
-			</if>
-		WHERE MEM_NO = #{mem_no}
-	
-	</update>
-	
-	<update id="deleteMember" parameterType = "MemberVo">
-	
+	<update id="updateMember" parameterType="MemberVo">
 		UPDATE MEMBER
-		SET
-		DElYN = 'Y'
-		WHERE MEM_NO = #{mem_no};
+		SET 
+			<if test ="pw !=null and pw!=''">
+				PW = #{pw}
+			</if>
+			<if test ="name !=null and name!=''">
+				NAME = #{name}
+			</if>
+		WHERE MEM_NO = 	#{mem_no}
+		
 	</update>
+	
 	
 	
 

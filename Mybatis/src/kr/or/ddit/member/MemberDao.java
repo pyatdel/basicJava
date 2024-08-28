@@ -32,15 +32,12 @@ public class MemberDao extends MyBatisDao {
 	
 	public int insertMember(MemberVo member) {
 		return insert("member.insertMember", member);
-		
 	}
 	
 	public void updateMember(MemberVo member) {
 		update("member.updateMember", member);
 	}
 	
-	public void deleteMember(MemberVo member) {
-		delete("member.deleteMember", member);
-	}
+	
 	
 }

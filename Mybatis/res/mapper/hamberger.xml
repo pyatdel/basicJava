@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ham">
+	
+	<!-- 
+	 위 태그에서 사용되는 속성들
+	 4) resultMap속성 : 결과 레코드 컬럼명과 VO객체의 property명이 다를 경우에 적절한 매핑을
+	                                위해 사용한다.
+	 -->
+	 
+	 <select id="getSetMenu" resultType="hashMap">
+	 	SELECT S.SET_NO, S.SET_NAME, LISTAGG( M.MENU_NAME,', ') SINGLE_LIST , SUM(M.MENU_PRICE) PRICE
+		FROM HAM_SET S , HAM_SET_MENU SM , HAM_MENU M
+		WHERE S.SET_NO = SM.SET_NO
+		AND SM.MENU_NO = M.MENU_NO
+		AND S.GROUP_NO = 4
+		GROUP BY S.SET_NO, S.SET_NAME
+		ORDER BY S.SET_NO
+	 </select>
+	 
+<!-- 	 <select id="getSetSingle" resultType="kr.or.ddit.ham.vo.MenuVo" parameterType="kr.or.ddit.ham.vo.MenuVo"> -->
+<!-- 		SELECT MENU_NO, MENU_NAME, MEMU_PRICE, GROUP_NAME -->
+<!-- 		FROM   HAM_MENU M , HEM_MENU_GROUP MG -->
+<!-- 		WHERE M.GROUP_NO = MG.GROUP_NO -->
+<!-- 	 	<if test="group_no!=0"> -->
+<!-- 	 		AND M.GROUP_NO = #{group_no} -->
+<!-- 	 	</if> -->
+<!-- 	 </select> -->
+	 
+	 <select id="getSetSingle" resultType="kr.or.ddit.ham.vo.MenuVo" parameterType="kr.or.ddit.ham.vo.MenuVo">
+		SELECT MENU_NO, MENU_NAME, MENU_PRICE
+		FROM   HAM_MENU M
+		WHERE 1=1
+		<if test="memu_price!=0">
+			<![CDATA[
+			AND M.MEMU_PRICE < #{memu_price}
+			]]>
+		</if>
+		<if test="group_no!=0">
+			AND M.GROUP_NO #{group_no}
+		</if>
+	 </select>
+	 
+	 <insert id="insertMenu" parameterType="kr.or.ddit.ham.vo.MenuVo">
+	 	INSERT INTO HAM_MENU 
+	 	VALUES (
+	 		(SELECT MAX(MENU_NO)+1 FROM HAM_MENU), 
+	 		#{menu_name} , #{group_no}, null, 
+	 		#{menu_price}
+	 	)
+	 </insert>
+	 
+	 <select id="getGroup" resultType="hashMap">
+	 	SELECT * FROM HAM_MENU_GROUP
+	 	
+	 </select>
+	 
+	 
+
+</mapper>
