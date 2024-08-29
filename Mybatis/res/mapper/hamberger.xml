@@ -9,7 +9,7 @@
 	 -->
 	 
 	 <select id="getSetMenu" resultType="hashMap">
-	 	SELECT S.SET_NO, S.SET_NAME, LISTAGG( M.MENU_NAME,', ') SINGLE_LIST , SUM(M.MENU_PRICE) PRICE
+	 	SELECT S.SET_NO, S.SET_NAME, LISTAGG( M.MENU_NAME,', ') SINGLE_LIST , SUM(M.MEMU_PRICE) PRICE
 		FROM HAM_SET S , HAM_SET_MENU SM , HAM_MENU M
 		WHERE S.SET_NO = SM.SET_NO
 		AND SM.MENU_NO = M.MENU_NO
@@ -28,7 +28,7 @@
 <!-- 	 </select> -->
 	 
 	 <select id="getSetSingle" resultType="kr.or.ddit.ham.vo.MenuVo" parameterType="kr.or.ddit.ham.vo.MenuVo">
-		SELECT MENU_NO, MENU_NAME, MENU_PRICE
+		SELECT MENU_NO, MENU_NAME, MEMU_PRICE
 		FROM   HAM_MENU M
 		WHERE 1=1
 		<if test="memu_price!=0">
@@ -46,12 +46,12 @@
 	 	VALUES (
 	 		(SELECT MAX(MENU_NO)+1 FROM HAM_MENU), 
 	 		#{menu_name} , #{group_no}, null, 
-	 		#{menu_price}
+	 		#{memu_price}
 	 	)
 	 </insert>
 	 
 	 <select id="getGroup" resultType="hashMap">
-	 	SELECT * FROM HAM_MENU_GROUP
+	 	SELECT * FROM HEM_MENU_GROUP
 	 	
 	 </select>
 	 

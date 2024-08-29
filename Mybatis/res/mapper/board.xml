@@ -7,5 +7,64 @@
 	 4) resultMap속성 : 결과 레코드 컬럼명과 VO객체의 property명이 다를 경우에 적절한 매핑을
 	                                위해 사용한다.
 	 -->
+	 
+	 <resultMap type="BoardVo" id="boardMap">
+	 	<result property="boardNo"  column="board_no"/>
+	 	<result property="regDate"  column="reg_date"/>
+	 	<result property="memNo"    column="mem_no"/>
+	 	<result property="codeNo"   column="code_no"/>
+	 	<result property="codeName" column="code_name"/>
+	 </resultMap>
+	 
+	 
+	 <update id="updateCnt" parameterType="int" >
+	 	UPDATE BOARD 
+	 	SET CNT = CNT+1
+	 	WHERE BOARD_NO = #{boardNo}
+	 
+	 </update>
+	 
+	 <select id="selectBoard" resultMap="boardMap" parameterType="BoardVo">
+	 	SELECT BOARD_NO, TITLE, CONTENT, 
+	           B.REG_DATE, B.MEM_NO, CNT, NAME WRITER
+		FROM BOARD B, MEMBER M
+		WHERE B.MEM_NO = M.MEM_NO
+		AND BOARD_NO = #{boardNo}
+	 </select>
+	 
+	 <select id="codeList" resultMap="boardMap">
+	 	SELECT * 
+	 	FROM BOARD_CODE
+	 	ORDER BY CODE_NO
+	 	
+	 </select>
+	 
+	 <select id="listBoard" resultMap="boardMap" parameterType="hashMap">
+	 	SELECT *
+		FROM  (SELECT  ROWNUM RN,  A.*
+		       FROM  (SELECT  
+		                     BOARD_NO, TITLE, CONTENT, 
+		                     B.REG_DATE, B.MEM_NO, CNT, NAME WRITER
+		              FROM BOARD B, MEMBER M
+		              WHERE B.MEM_NO = M.MEM_NO
+		              AND CODE_NO = #{codeNo}
+		              ORDER BY BOARD_NO DESC) A
+		       ) A
+		WHERE  RN BETWEEN #{startNo} AND #{endNo}
+	 </select>
+	 
+	 <update id="updateBoard" parameterType="BoardVo">
+		UPDATE BOARD 
+		SET 
+			<if test="content !=null">
+				CONTENT = #{content}
+			</if>
+			<if test="title !=null">
+				TITLE = #{title}
+			</if>
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	 
 
 </mapper>
