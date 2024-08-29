@@ -20,7 +20,7 @@ public class Step3MiddleMenu {
 		boolean chk = false; 
 		File rootDir = new File("yes24/step3");
 		for (File bigMenu : rootDir.listFiles()) {
-			if(bigMenu.getName().contains("IT 모바일")) {
+			if(bigMenu.getName().contains("가정 살림")) {
 				chk = true;
 			}
 			if(!chk) continue;
