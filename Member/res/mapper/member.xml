@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	
+	<select id="login" resultType="MemberVo" parameterType="MemberVo">
+		SELECT * 
+		FROM MEMBER 
+		WHERE ID = #{id} 
+		AND   PW = #{pw}
+	</select>	
+	
+	<insert id="join" parameterType="MemberVo">
+		INSERT INTO MEMBER 
+		VALUES (
+			(SELECT NVL(MAX(MEM_NO), 0)+1 FROM MEMBER), 
+			#{id}, #{pw}, #{name}, SYSDATE, 'N'    
+		)
+	
+	</insert>
+	
+
+</mapper>
