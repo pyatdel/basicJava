@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	
+	//jQuery AJAX
+	
+	$.ajax({
+		//요청
+		type: 'post', //method
+		url: '/Ajax', 
+		//data: 'uNm=마라탕후루', //요청할 정보가 없을 때는 생략 가능
+							 //데이터의 기본 형식은 key=value로 구성됨
+		data: JSON.stringify({'반장':'박광제'}),
+		//응답
+		success:function(rst){
+			console.log(rst); //성공시 결과를 반환받는 매개변수
+			$('body').html("<mark>" + rst.pkj + "</mark>");
+		},
+		error:function(xhr){
+			alert(xhr.status); //통신상태를 코드 값으로 확인
+		},
+		dataType: 'json' //응답받은 데이터를 어떤 형식으로 해석할지 지정하는 속성
+					     //json설정시 >>  JSON.parse(응답받은 json문자열)
+	})
+	
+	
+	
+</script>
+
+</html>

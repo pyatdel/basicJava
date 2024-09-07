@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+div {
+  border: solid;
+}
+</style>
+</head>
+<body>
+
+	<input value="박승민">
+	<input type='button' value="요청전송">	
+	<div></div>
+
+<script>
+	
+	let v_inputs = document.querySelectorAll('input');
+	v_inputs[1].addEventListener('click',function(){
+		
+		//객체 생성하기
+		let req = new XMLHttpRequest();
+	
+		let userNm = v_inputs[0].value;
+	
+		//요청 설정
+		req.open('post','sp.jsp');	
+		//post일때 정보를 key=value의 형식으로 인식할 수 있는 속성을 반드시 설정해줘야 함 
+		//req.setRequestHeader('content-type','application/x-www-form-urlencoded;charset=utf-8;');
+		req.setRequestHeader('content-type','application/x-www-form-urlencoded;');
+		req.setRequestHeader('content-type','application/json;'); //json형식으로 보낼 때 반드시 셋팅 필요
+		
+		//요청 전달
+		req.send('uNm=' + userNm); //post method일때 인수로 요청 전달
+	
+		//응답 받기	
+		req.onreadystatechange = function(){
+			if(req.readyState == 4 && req.status == 200){
+<!--			console.log(req.responseText); //응답-->
+				document.querySelector('div').innerText 
+						= req.responseText.trim();
+			}
+		}
+		
+	});
+	
+	
+	
+	
+</script>
+</body>
+</html>

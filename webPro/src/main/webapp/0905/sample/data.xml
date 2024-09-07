@@ -1,0 +1,27 @@
+<!-- XML
+데이터를 표현하는 마크업 언어의 하나
+주로 서버 간 데이터 통신에 활용
+HTML과 같이 시작태그와 종료태그로 값을 정의한다. 
+-->
+<friends>
+	<friend>
+		<name>포비</name>
+		<type>백곰</type>
+		<alias>낚시왕</alias>		
+	</friend>
+	<friend>
+		<name>해리</name>
+		<type>벌새</type>
+		<alias>가수왕</alias>		
+	</friend>
+	<friend>
+		<name>로디</name>
+		<type>로봇</type>
+		<alias>로봇왕</alias>		
+	</friend>
+	<friend>
+		<name>패티</name>
+		<type>펭귄</type>
+		<alias>춤신춤왕</alias>		
+	</friend>
+</friends>

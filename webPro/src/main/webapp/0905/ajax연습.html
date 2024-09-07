@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<button>CSV</button>	
+	<button>JSON</button>	
+	<button>XML</button>	
+	<div></div>
+
+<script>
+	let btns = document.querySelectorAll('button')
+	
+	//CSV정보 AJAX로 가져오기
+	btns[0].addEventListener('click',function(){
+		
+		//1객체 생성 >> XMLHttpRequest
+		let req = new XMLHttpRequest();
+		//2요청 설정 >> open(method, url, async)
+		req.open('get','./sample/data.csv',true);
+		//4응답 받기 >> onreadystatechange 콘솔에서 data.csv정보 확인하기
+		req.onreadystatechange = function(){
+			if(req.readyState == 4 && req.status == 200){
+<!--				console.log(req.responseText);-->
+				f_csv(req.responseText);
+			}
+		};
+		//3요청 전달 >> send()
+		//3번보다 4번이 더 먼저 작성되는 이유는 
+		// 요청이 순식간에 진행되어 이벤트 리스너보다 코드 반환이 더 빠를 경우,
+		// 코드의 유실을 막기위해 먼저 4번 항목을 완성하고 안전하게 코드값을 받아야 함
+		req.send();
+	});
+	
+	function f_csv(p_csv){
+		//console.log(">>> ", p_csv);
+		
+		//정보를 콤마로 나누어 테이블 형식으로 출력
+		let v_tbl = "<table border='1'>";
+		
+		//한 줄씩 정보 나누기 - split(구분자)로 문자열을 배열로 반환받음
+		let lines = p_csv.split("\r\n");
+		
+		for(let i=0; i<lines.length; i++){
+			v_tbl += `<tr>`;
+				
+			//각 칸의 정보로 나누기 - 
+			let cells = lines[i].split(",");
+			
+			for(let j=0; j<cells.length; j++){
+				if(i<1){
+					v_tbl += `<th>${cells[j]}</th>`;
+				}else{
+					v_tbl += `<td>${cells[j]}</td>`;
+				}
+			}
+			
+			v_tbl += `</tr>`;
+		}
+		v_tbl += "</table>";
+		
+		document.querySelector('div').innerHTML = v_tbl;
+	}
+	
+	//JSON정보 AJAX로 가져오기
+	btns[1].addEventListener('click',function(){
+		//1 객체 생성
+		let ajax = new XMLHttpRequest();
+		//2 요청 설정
+		ajax.open('get','sample/data.json');
+		//4 응답 받기
+		ajax.onreadystatechange = function(){
+			if(ajax.readyState==4&&ajax.status==200){
+				console.log( typeof ajax.responseText);
+				let jsonData = JSON.parse(ajax.responseText); //json문자열>>js객체로 변환
+				f_json(jsonData);
+			}
+		}; 
+		//3 요청 전달
+		ajax.send();
+	});
+	
+	let f_json = function(p_json){
+		//console.log(">>>>>>", p_json);
+		
+		//테이블로 최종 결과 출력하기
+		let v_tbl = "<table border=1>";
+			
+		//전달된 객체에서 key정보만 추출해보자
+		let objKey = Object.keys(p_json[2]); //4객체들 중 한 객체를 대상으로 key정보만 배열로 받음
+			
+		//v_tbl += "<tr><th>" + objKey[0] + "</th><th>" + objKey[1] + "</th><th>" + objKey[2] + "</th></tr>";
+		v_tbl += `<tr><th>${objKey[0]}</th><th>${objKey[1]}</th><th>${objKey[2]}</th></tr>`;
+			
+		for(let i=0; i<p_json.length; i++){
+			v_tbl += "<tr>";
+				
+			v_tbl += "<td>" + p_json[i].name + "</td>";
+			v_tbl += `<td>🥨${p_json[i].type}</td>`;
+			v_tbl += "<td>" + p_json[i].alias + "</td>";
+			
+			v_tbl += "</tr>";
+		}
+		
+		v_tbl += "</table>";
+		
+		document.querySelector('body').insertAdjacentHTML("beforeend",v_tbl);
+	}
+	
+	//XML정보 AJAX로 가져오기
+	btns[2].addEventListener('click',function(){
+		
+		//객체 생성
+		let req = new XMLHttpRequest();
+		//요청 설정
+		req.open('get','./sample/data.xml',true);
+		//응답 받기
+		req.addEventListener('readystatechange',function(){
+			if(this.readyState == 4 && this.status == 200){
+				let xmlData = this.responseXML; //?
+				//console.log(xmlData.querySelectorAll('friend'));
+				f_xml(xmlData);
+			}
+		});
+		//요청 전달
+		req.send();
+	});
+	
+	let f_xml = (p_xml) => {
+		let v_friends = p_xml.querySelectorAll('friend');
+		
+		console.log( v_friends[0].children[0].firstChild);
+		
+		let v_tbl = "<table border=1>";
+		
+		v_tbl += "<tr><th colspan='3'>뽀로로 친구들</th></tr>";
+		v_tbl += "<tr><th>" + v_friends[0].children[0].tagName
+			+ "</th><th>" + v_friends[0].children[1].tagName 
+			+ "</th><th>" + v_friends[0].children[2].tagName 
+			+ "</th></tr>";
+		
+		for(let i=0; i<v_friends.length; i++){
+			v_tbl += "<tr>";
+			
+			let child = v_friends[i].children;
+			for(let j=0; j<child.length; j++){
+				v_tbl += `<td>${child[j].innerHTML}</td>`;
+			}
+			
+			v_tbl += "</tr>";
+		}
+		v_tbl += "</table>";
+		
+		document.querySelector('body').innerHTML = v_tbl;
+	};
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</script>
+</body>
+</html>
