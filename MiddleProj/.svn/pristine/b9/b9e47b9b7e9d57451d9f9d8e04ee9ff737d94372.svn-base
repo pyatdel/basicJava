@@ -1,0 +1,174 @@
+@charset "EUC-KR";
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 20px;
+}
+
+.contentInner {
+    max-width: 800px;
+    margin: auto;
+   } 
+    
+
+
+
+.reservation-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.reservation-header h3.title {
+    margin: 0;
+    font-size: 24px;
+}
+
+.badge-container {
+    display: flex;
+    align-items: center;
+}
+
+.badge {
+    background-color: #ffd700; /* 금색 */
+    color: black;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-left: 10px;
+}
+
+.reservation-desc {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.legend {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+}
+
+.legend .seat {
+    cursor: default; /* 기본 커서 */
+    opacity: 0.5; /* 반투명하게 표시 (선택 불가 상태) */
+}
+
+.legend .seat:hover {
+    pointer-events: none; /* 마우스 이벤트 비활성화 */
+}
+
+
+.seat {
+    width: 30px;
+    height: 30px;
+    border: none;
+    margin: 5px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.seat1 {
+    background-color: darkgrey; /* 일반석 색상 */
+}
+
+.seat3 {
+    background-color: #f1a7c2; /* 2인석 색상 */
+}
+
+.seat2 {
+    background-color: yellowgreen; /* 휠체어석 색상 */
+}
+
+.seat.selected {
+/*    border: 2px solid black;  선택된 좌석의 테두리를 빨간색으로 변경 */
+        outline: 2px solid black; /* 선택된 좌석의 외곽선을 사용하여 크기 변동 방지 */
+
+/*    background-color: #f0e68c;  선택된 좌석 배경색 */
+}
+
+.seat.sold {
+    background-color: lightgrey; /* 판매 완료 색상 */
+    cursor: not-allowed;
+}
+
+.screen {
+    height: 40px;
+    background-color: #666;
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    margin: 20px 0;
+    border-radius: 4px;
+    position: relative;
+}
+
+#seats_list {
+    display: flex;
+    flex-wrap: colum;
+}
+
+#seats_list .row {
+    display: flex;
+    width: 100%;
+}
+
+#seats_list .row .seat {
+    margin-right: 10px;
+}
+
+    /* 선택한 좌석 정보 스타일 */
+    #seat-summary {
+        font-size: 16px; /* 글씨 크기 */
+/*        font-weight: bold;  글씨 두껍게 */
+        margin-top: 20px; /* 위쪽 여백 */
+        color: #333; /* 글씨 색상 */
+    }
+
+    #total-price {
+        font-size: 18px; /* 글씨 크기 */
+        margin-top: 10px; /* 위쪽 여백 */
+/*        color: #ff572C2;  총 금액 색상 */
+        font-weight: bold; /* 글씨 두껍게 */
+        display: inline-block; /* inline-block으로 설정하여 버튼과 같은 줄에 표시 */
+
+    }
+
+    /* 결제하기 버튼 스타일 */
+    #reserveButton {
+        font-size: 20px; /* 글씨 크기 */
+        font-weight: bold; /* 글씨 두껍게 */
+        background-color: red; /* 버튼 배경색 */
+        color: white; /* 글씨 색상 */
+        border: none; /* 테두리 없음 */
+        padding: 10px 20px; /* 패딩 추가 */
+        border-radius: 5px; /* 모서리 둥글게 */
+        cursor: pointer; /* 마우스 커서 변경 */
+        margin-top: 20px; /* 위쪽 여백 */
+    }
+
+    #reserveButton:hover {
+        background-color: orangered; /* 호버 시 배경색 변경 */
+    }
+	
+
+
+@media (max-width: 600px) {
+    .reservation-inner {
+        padding: 15px;
+    }
+
+    .seat {
+        width: 25px;
+        height: 25px;
+    }
+}

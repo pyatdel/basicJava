@@ -1,0 +1,83 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var='contextPath' value='${pageContext.request.contextPath}'></c:set>
+<%@page import="jakarta.servlet.ServletContext"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+<!-- 영화 리스트 출력 (개봉작 기준으로 최신순이 디폴트), 최신순, 조회수순으로 정렬(radio),상영중, 개봉예정작 선택 radio -->
+	<div>
+	<form action="${contextPath}/movieDetail.do">
+	<!-- 
+		영화 검색 후 title로 select한 상태로 하면 where movieName=search 그 상태로 영화 클릭했을 때 movieNo이 넘어가서 movieNo에 맞는 movieName이 keyword로 저장
+		영화를 감독으로 select후 search하면 조인 후 where 감독명 = search 그 상태로 영화 클릭했을 때 movieNo이 넘어가서 movieNo에 맞는 감독명을 keyword로 저장 
+	 -->
+	<input type='text' name='search'><button>검색</button>
+	
+	<!-- 영화제목, 배우, 장르로 검색(select) boardWeb 프로젝트 참고 -->
+	
+	<select name='select'>
+		<option value='title'>제목</option>
+		<option value='actor'>배우</option>
+	</select>
+		<c:forEach var="movie" items="${ movieList}">
+			<input type="hidden" name="movieNo" value="${movie.movieNo}">
+			<li>
+				<a href="movieDetail.do?movie_no=${movie.movieNo}"> 
+					<span>${movie.movieName}</span>
+				</a>
+			</li>
+		</c:forEach>
+		</form>
+		
+		
+		
+		<!-- 페이징 처리 -->
+		
+		<!-- 
+		<table>
+			<tr>
+				<th>영화코드</th>
+				<th>제목</th>
+				<th>포스터</th>
+				<th>제작사</th>
+				<th>개봉일</th>
+				<th>국가</th>
+				<th>줄거리</th>
+				<th>러닝타임</th>
+				<th>예고편</th>
+				<th>등급</th>
+				<th>상태</th>
+				<th>관객수</th>
+			</tr>
+			<c:forEach var="movie" items="${ movieList}">
+				<tr>
+					<td><input type="hidden" name="movieNo" value="${movie.movieNo}"></td>
+					<td><a href="movieDetail?movie_no=${movie.movieNo}">${movie.movieName}
+					</a></td>
+					<td>${movie.moviePoster}</td>
+					<td>${movie.movieCompany}</td>
+					<td>${movie.movieRelease}</td>
+					<td>${movie.movieCountry}</td>
+					<td>${movie.movieContent}</td>
+					<td>${movie.movieRunningtime}</td>
+					<td>${movie.movieTrailer}</td>
+					<td>${movie.movieLevel}</td>
+					<td>${movie.movieState}</td>
+					<td>${movie.boxoffice}</td>
+				</tr>
+			</c:forEach>
+		</table>
+		 -->
+	</div>
+</body>
+</html> 
+

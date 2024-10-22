@@ -1,0 +1,18 @@
+package kr.or.ddit.vo;
+
+import lombok.Data;
+
+@Data
+public class ReservationVo {
+	private int movieReservNo;
+	private String movieReservDate;
+	private int memNo;
+	private String shcNo;
+	private int moviePrice;
+	private int movieHeadcount;
+	
+	private SeatVo seat; //SeatVo 포함
+	private SpotVo spot; //SpotVo 포함
+	
+
+}

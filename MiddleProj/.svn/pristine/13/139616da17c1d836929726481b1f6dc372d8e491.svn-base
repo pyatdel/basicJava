@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="movie">
+	<resultMap type="MovieVO" id="movieMap"> <!-- type은 mybatis-config에서 alias 한 것 -->
+		<result property="movieNo" column="movie_no" />
+		<result property="movieName" column="movie_name" />
+		<result property="moviePoster" column="movie_poster" />
+		<result property="movieCompany" column="movie_company" />
+		<result property="movieRelease" column="movie_release" />
+		<result property="movieCountry" column="movie_country" />
+		<result property="movieContent" column="movie_content" />
+		<result property="movieRunningtime" column="movie_runningtime" />
+		<result property="movieTrailer" column="movie_trailer" />
+		<result property="movieLevel" column="movie_level" />
+		<result property="movieState" column="movie_state" />
+	</resultMap>
+	
+	<select id="movieList" parameterType="MovieVO" resultMap="movieMap">
+		SELECT * FROM MOVIE
+	</select>
+
+	<insert id="insertMovie" parameterType="MovieVO">
+		INSERT INTO MOVIE(MOVIE_NO, MOVIE_NAME, MOVIE_POSTER, MOVIE_COMPANY, MOVIE_RELEASE,
+                  MOVIE_COUNTRY, MOVIE_CONTENT, MOVIE_RUNNINGTIME, MOVIE_TRAILER,
+                  MOVIE_LEVEL, MOVIE_STATE, BOXOFFICE)
+		VALUES(#{movieNo},#{movieName},#{moviePoster},#{movieCompany},#{movieRelease},
+			#{movieCountry},#{movieContent}, #{movieRunningtime},#{movieTrailer},#{movieLevel},#{movieState},#{boxoffice})
+	</insert> 
+	
+	<select id="getMovie" parameterType="MovieVO" resultMap="movieMap">
+		SELECT MOVIE_NO FROM MOVIE WHERE MOVIE_NO=#{movieNo}
+	</select>
+
+	
+	
+	
+
+	
+</mapper>

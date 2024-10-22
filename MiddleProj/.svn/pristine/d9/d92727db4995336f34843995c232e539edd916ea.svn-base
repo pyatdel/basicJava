@@ -1,0 +1,11 @@
+package kr.or.ddit.dao;
+
+import java.util.List;
+
+import kr.or.ddit.vo.ReviewVo;
+
+public interface iReviewDao {
+	
+	public List<ReviewVo> reviewList(String movie);
+
+}

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="movie">
+	<resultMap type="MovieVO" id="movieMap"> <!-- type은 mybatis-config에서 alias 한 것 -->
+		<result property="movieNo" column="movie_no" />
+		<result property="movieName" column="movie_name" />
+		<result property="moviePoster" column="movie_poster" />
+		<result property="movieCompany" column="movie_company" />
+		<result property="movieRelease" column="movie_release" />
+		<result property="movieCountry" column="movie_country" />
+		<result property="movieContent" column="movie_content" />
+		<result property="movieRunningtime" column="movie_runningtime" />
+		<result property="movieTrailer" column="movie_trailer" />
+		<result property="movieLevel" column="movie_level" />
+		<result property="movieState" column="movie_state" />
+	</resultMap>
+
+	<resultMap type="BoxofficeVO" id="boxMap"> <!-- type은 mybatis-config에서 alias 한 것 -->
+		<result property="movieName" column="movie_name" />
+		<result property="releaseDate" column="movie_poster" />
+		<result property="boxofficeDate" column="movie_company" />
+		<result property="totalPeople" column="movie_release" />
+		<result property="todayPeople" column="movie_country" />
+	</resultMap>
+
+	<select id="movieList" parameterType="MovieVO"
+		resultMap="movieMap">
+		SELECT * FROM MOVIE order by movie_release desc
+	</select>
+
+	<insert id="insertMovie" parameterType="MovieVO">
+		INSERT INTO
+		MOVIE(MOVIE_NO, MOVIE_NAME, MOVIE_POSTER, MOVIE_COMPANY,
+		MOVIE_RELEASE,
+		MOVIE_COUNTRY, MOVIE_CONTENT, MOVIE_RUNNINGTIME,
+		MOVIE_TRAILER,
+		MOVIE_LEVEL, MOVIE_STATE, BOXOFFICE)
+		VALUES(#{movieNo},#{movieName},#{moviePoster},#{movieCompany},#{movieRelease},
+		#{movieCountry},#{movieContent},
+		#{movieRunningtime},#{movieTrailer},#{movieLevel},#{movieState},#{boxoffice})
+	</insert>
+
+	<select id="getMovie" parameterType="MovieVO"
+		resultMap="movieMap">
+		SELECT * FROM MOVIE WHERE MOVIE_NO=#{movieNo}
+	</select>
+
+	<select id="getMovieName" parameterType="MovieVO"
+		resultMap="movieMap">
+		SELECT * FROM MOVIE WHERE MOVIE_NAME=#{movieName}
+	</select>
+
+	<insert id="insertbox" parameterType="BoxofficeVO">
+		INSERT INTO
+		BOXOFFICE(boxcode, movie_name, release_date, boxoffice_date,
+		rank,
+		total_people, today_people)
+		VALUES(boxoffice_seq.NEXTVAL, #{movieName},
+		#{releaseDate},
+		#{boxofficeDate}, #{rank}, #{totalPeople},
+		#{todayPeople})
+	</insert>
+
+	<select id="getMovieNameRelease" parameterType="MovieVO"
+		resultMap="movieMap">
+		SELECT * FROM MOVIE WHERE MOVIE_NAME=#{movieName} AND
+		MOVIE_RELEASE=#{movieRelease}
+	</select>
+
+	<select id="boxList" resultMap="boxMap">
+		SELECT * FROM BOXOFFICE
+		WHERE
+		BOXOFFICE_DATE = TO_NUMBER(TO_CHAR(TRUNC(SYSDATE) - 1, 'YYYYMMDD'))
+	</select>
+
+	<select id="boxInfo" resultMap="movieMap">
+		select m.*
+		from movie m join
+		boxoffice b
+		on m.movie_name = b.movie_name
+		and m.movie_release =
+		b.release_date
+		and b.BOXOFFICE_DATE = TO_NUMBER(TO_CHAR(TRUNC(SYSDATE)-
+		1, 'YYYYMMDD'))
+		order by b.rank
+		
+	</select>
+
+	<select id="boxOfficeExists" resultMap="boxMap"
+		parameterType="BoxofficeVO">
+		SELECT * FROM BOXOFFICE WHERE boxoffice_date =
+		TO_NUMBER(TO_CHAR(TRUNC(SYSDATE)-
+		1, 'YYYYMMDD'))
+	</select>
+
+
+
+</mapper>

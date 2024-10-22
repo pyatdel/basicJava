@@ -1,0 +1,45 @@
+package kr.or.ddit.service;
+
+import java.util.List;
+
+import kr.or.ddit.dao.MovieDaoImpl;
+import kr.or.ddit.dao.iMovieDao;
+import kr.or.ddit.vo.MovieVo;
+
+public class MovieServiceImpl implements iMovieService{
+
+	private static MovieServiceImpl instance;
+
+	private MovieServiceImpl() {
+
+	}
+
+	public static MovieServiceImpl getInstance() {
+		if (instance == null) {
+			instance = new MovieServiceImpl();
+
+		}
+		return instance;
+	}
+	
+	iMovieDao movieDao = MovieDaoImpl.getInstance();
+
+	@Override
+	public int insertMovie(MovieVo movieVo) {
+		return movieDao.insertMovie(movieVo);
+	}
+
+	@Override
+	public List<MovieVo> movieList() {
+		return movieDao.movieList();
+	}
+
+	@Override
+	public MovieVo getMovie(MovieVo movieNo) {
+		return movieDao.getMovie(movieNo);
+	}
+
+	
+}
+
+

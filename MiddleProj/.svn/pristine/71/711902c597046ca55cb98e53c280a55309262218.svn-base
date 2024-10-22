@@ -1,0 +1,23 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+import java.net.URL;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.service.MovieServiceImpl;
+import kr.or.ddit.service.iMovieService;
+
+@WebServlet("")
+public class MovieController extends HttpServlet{
+	
+	iMovieService movieService = MovieServiceImpl.getInstance();
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		URL url = new URL("https://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=de8022431ff65b017292da8f4ccb5ef6");
+	}
+}

@@ -1,0 +1,51 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.service.MemberServiceImpl;
+import kr.or.ddit.service.ReviewServiceImpl;
+import kr.or.ddit.service.iMemberService;
+import kr.or.ddit.service.iReviewService;
+import kr.or.ddit.vo.MemberVo;
+import kr.or.ddit.vo.ReviewVo;
+
+@WebServlet("/updateReview.do")
+public class ReviewUpdateController extends HttpServlet {
+    iReviewService reviewService = ReviewServiceImpl.getInstance();
+    iMemberService memberService = MemberServiceImpl.getInstance();
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    	String reviewCode = req.getParameter("reviewCode");
+        String movieNo = req.getParameter("movie_no");
+        String memId= req.getParameter("memId");
+        String content= req.getParameter("reviewContent");
+        String reviewStar = req.getParameter("reviewStar");
+        
+        
+        int memNo = memberService.selectMemNo(memId);
+        ReviewVo review = new ReviewVo();
+        review.setReviewCode(reviewCode);
+        review.setMemNo(memNo);
+        review.setMovieNo(movieNo);
+        review.setReviewContent(content); 
+//        ReviewVo reviewInfo= reviewService.selectToUpdateReview(review);
+//        System.out.println(reviewInfo);
+        
+//        String moviename = reviewInfo.getMovieName();
+//        String memid= reviewInfo.getMemId();
+//        String Rcontent = reviewInfo.getReviewContent();
+//        int star = reviewInfo.getReviewStar();
+        
+//        req.setAttribute("reviewInfo", reviewInfo);
+        
+        
+        reviewService.updateReview(review);
+        //System.out.println(review);
+        resp.sendRedirect(req.getContextPath() + "/movieDetail.do?movie_no=" + req.getParameter("movie_no")); // 삭제 후 상세 페이지로 리다이렉트
+    }
+}

@@ -1,0 +1,12 @@
+package kr.or.ddit.dao;
+
+import kr.or.ddit.vo.StoreVo;
+import java.util.List;
+
+public interface iStoreDao {
+    List<StoreVo> selectAllProducts();
+    StoreVo selectProductById(String productId);
+    int insertProduct(StoreVo product);
+    int updateProduct(StoreVo product);
+    int deleteProduct(String productId);
+}

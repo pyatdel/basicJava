@@ -1,0 +1,83 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.google.gson.Gson;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.service.BoardServiceImpl;
+import kr.or.ddit.service.iBoardService;
+import kr.or.ddit.vo.BoardVo;
+
+@WebServlet("/board")
+public class BoardController extends HttpServlet {
+
+    iBoardService boardService = BoardServiceImpl.getInstance();
+    Gson gson = new Gson();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        String boardCode = req.getParameter("boardCode");
+
+        System.out.println("Received action: " + action);
+        System.out.println("Received boardCode: " + boardCode);
+
+        if ("getList".equals(action) && boardCode != null) {
+            List<BoardVo> boardList = boardService.boardList(boardCode);
+            System.out.println("Retrieved boardList size: " + boardList.size());
+            
+            String jsonResponse = gson.toJson(boardList);
+            System.out.println("JSON response: " + jsonResponse);
+            
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().write(jsonResponse);
+        } else {
+            // 기본 페이지 로드 로직
+            List<BoardVo> cateList = boardService.cateList();
+            req.setAttribute("cateList", cateList);
+            req.getRequestDispatcher("/WEB-INF/view/index2.jsp").forward(req, resp);
+        }
+    }
+
+    private void handleGetList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String boardCode = req.getParameter("boardCode");
+        System.out.println("요청된 게시판 코드: " + boardCode);
+
+        List<BoardVo> boardList = boardService.boardList(boardCode); 
+        System.out.println("전체 가져온 게시글 수: " + boardList.size());
+
+        // 각 게시글의 board_code 출력
+        for (BoardVo board : boardList) {
+            System.out.println("게시글: " + board.getBoard_no() + ", 코드: " + board.getBoard_code());
+        }
+
+        if (boardCode != null && !boardCode.isEmpty()) {
+            boardList = boardList.stream()
+                .filter(board -> boardCode.equals(board.getBoard_code()))
+                .collect(Collectors.toList());
+        }
+        System.out.println("필터링된 게시글 수: " + boardList.size());
+
+        String jsonResponse = gson.toJson(boardList);
+        System.out.println("JSON 응답: " + jsonResponse);
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        resp.getWriter().write(jsonResponse);
+    }
+
+    private void handleDefault(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<BoardVo> cateList = boardService.cateList();
+        req.setAttribute("cateList", cateList);
+
+        req.getRequestDispatcher("/WEB-INF/view/index2.jsp").forward(req, resp);
+    }
+}

@@ -1,0 +1,39 @@
+package kr.or.ddit.service;
+
+import java.util.List;
+
+import kr.or.ddit.dao.iStoreDao;
+import kr.or.ddit.vo.StoreVo;
+
+public class StoreServiceImpl implements iStoreService {
+    private iStoreDao storeDao;
+
+    public StoreServiceImpl(iStoreDao storeDao) {
+        this.storeDao = storeDao;
+    }
+
+    @Override
+    public List<StoreVo> getAllProducts() {
+        return storeDao.selectAllProducts();
+    }
+
+    @Override
+    public StoreVo getProductById(String productId) {
+        return storeDao.selectProductById(productId);
+    }
+
+    @Override
+    public boolean addProduct(StoreVo product) {
+        return storeDao.insertProduct(product) > 0;
+    }
+
+    @Override
+    public boolean updateProduct(StoreVo product) {
+        return storeDao.updateProduct(product) > 0;
+    }
+
+    @Override
+    public boolean deleteProduct(String productId) {
+        return storeDao.deleteProduct(productId) > 0;
+    }
+}

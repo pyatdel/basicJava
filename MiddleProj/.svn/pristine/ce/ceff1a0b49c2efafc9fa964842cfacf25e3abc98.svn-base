@@ -1,0 +1,112 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import com.google.gson.Gson;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.service.BoardServiceImpl;
+import kr.or.ddit.service.iBoardService;
+import kr.or.ddit.vo.BoardVo;
+
+@WebServlet("/board")
+public class BoardController extends HttpServlet {
+    private iBoardService boardService = BoardServiceImpl.getInstance();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        System.out.println("BoardController: action = " + action);
+
+        if ("getList".equals(action)) {
+            handleGetList(req, resp);
+        } else if ("getBoard".equals(action)) {
+            handleGetBoard(req, resp);
+        } else {
+            loadDefaultPage(req, resp);
+        }
+    }
+
+    private void loadDefaultPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("BoardController: loadDefaultPage 시작");
+        
+        List<BoardVo> cateList = boardService.cateList();
+        System.out.println("BoardController: cateList = " + cateList);
+        
+        List<BoardVo> allBoards = boardService.getAllBoards();
+        System.out.println("BoardController: allBoards = " + allBoards);
+        
+        req.setAttribute("categoryList", cateList);
+        req.setAttribute("boardList", allBoards);
+        
+        System.out.println("BoardController: JSP로 포워딩");
+        req.getRequestDispatcher("/WEB-INF/view/index2.jsp").forward(req, resp);
+    }
+
+    private void handleGetList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String boardCode = req.getParameter("boardCode");
+        System.out.println("BoardController: handleGetList called with boardCode = " + boardCode);
+
+        try {
+            List<BoardVo> boardList;
+            if (boardCode == null || boardCode.isEmpty()) {
+                boardList = boardService.getAllBoards();
+            } else {
+                boardList = boardService.boardList(boardCode);
+            }
+            System.out.println("BoardController: boardList size = " + (boardList != null ? boardList.size() : "null"));
+
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            
+            String jsonResponse = new Gson().toJson(boardList);
+            System.out.println("BoardController: JSON response = " + jsonResponse);
+            resp.getWriter().write(jsonResponse);
+        } catch (Exception e) {
+            System.err.println("BoardController: Error occurred - " + e.getMessage());
+            e.printStackTrace();
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("{\"error\": \"서버 오류가 발생했습니다.\"}");
+        }
+    }
+
+    private void handleGetBoard(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String boardNo = req.getParameter("boardNo");
+        System.out.println("BoardController: handleGetBoard called with boardNo = " + boardNo);
+
+        try {
+            BoardVo board = boardService.getBoard(boardNo);
+            if (board != null) {
+                System.out.println("Board: " + board.getBoard_no() + 
+                                   ", Title: " + board.getBoard_title() + 
+                                   ", Content: " + board.getBoard_content() + 
+                                   ", Count: " + board.getBoard_cnt() + 
+                                   ", Image: " + board.getBoard_img() + 
+                                   ", Write Date: " + board.getBoard_write_date() + 
+                                   ", Start: " + board.getBoard_start() + 
+                                   ", End: " + board.getBoard_end() + 
+                                   ", Member No: " + board.getMem_no() + 
+                                   ", Board Code: " + board.getBoard_code() + 
+                                   ", Writer: " + board.getWriter() + 
+                                   ", Code Name: " + board.getCode_name());
+            }
+
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            
+            String jsonResponse = new Gson().toJson(board);
+            System.out.println("BoardController: JSON response = " + jsonResponse);
+            resp.getWriter().write(jsonResponse);
+        } catch (Exception e) {
+            System.err.println("BoardController: Error occurred - " + e.getMessage());
+            e.printStackTrace();
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("{\"error\": \"서버 오류가 발생했습니다.\"}");
+        }
+    }
+}

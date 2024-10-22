@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+
+	<select id="catelist" resultType="boardVo">
+		SELECT *
+		FROM BOARD_CODE
+	</select>
+	
+	<select id="boardlist" resultType="boardVo" parameterType="boardVo">
+				SELECT B.*, C.CODE_NAME, M.NAME WRITER 
+        FROM
+        BOARD B, BOARD_CODE C, MEMBER M
+        WHERE B.CODE_NO = C.CODE_NO
+        AND B.MEM_NO = M.MEM_NO
+        AND B.CODE_NO = #{code_no}
+        ORDER BY BOARD_NO DESC
+        <if test="search!=null">
+        	AND CONTENT LIKE '%'||#{search}||'%'u 
+        </if>
+        <if test="content!=null">
+        	AND TITLE LIKE '%'||#{content}||'%'u 
+        </if>
+         <if test="writer!=null">
+        	AND CONTENT LIKE '%'||#{writer}||'%'u 
+        </if>
+	</select>
+	
+
+
+</mapper>

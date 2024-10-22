@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="review">
+	<resultMap type="ReviewVO" id="reviewMap">
+		<result property="reviewCode" column="review_code" />
+		<result property="reviewLike" column="review_like" />
+		<result property="reviewContent" column="review_content" />
+		<result property="reviewDate" column="review_date" />
+		<result property="memNo" column="mem_no" />
+		<result property="movieNo" column="movie_no" />
+		<result property="reviewStar" column="review_star" />
+		<result property="memName" column="mem_name" />
+		<result property="movieName" column="movie_name" />
+	</resultMap>
+
+	<select id="reviewList" parameterType="String"
+		resultMap="reviewMap">
+		select mem.mem_name, mov.movie_name, rev.review_like, rev.review_content, rev.review_date, rev.review_star
+		from review rev , member mem, movie mov
+		where mem.mem_no=rev.mem_no
+		and mov.movie_no=rev.movie_no
+		and rev.movie_no=#{movieNo}
+	</select>
+
+
+</mapper>

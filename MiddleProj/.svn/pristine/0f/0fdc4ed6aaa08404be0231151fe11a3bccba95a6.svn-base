@@ -1,0 +1,10 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="store">
+    <select id="getAllProducts" resultType="ProductVo">
+        SELECT * FROM products
+    </select>
+
+    <select id="getProductsByCategory" parameterType="string" resultType="ProductVo">
+        SELECT * FROM products WHERE category = #{category}
+    </select>
+</mapper>

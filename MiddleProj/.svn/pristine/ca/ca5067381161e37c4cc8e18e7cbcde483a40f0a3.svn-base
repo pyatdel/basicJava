@@ -1,0 +1,10 @@
+package kr.or.ddit.service;
+
+import kr.or.ddit.vo.MemberVo;
+
+public interface iMemberService {
+
+	//로그인 검증
+	public MemberVo login(MemberVo member);
+
+}

@@ -1,0 +1,25 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.service.BoardServiceImpl;
+import kr.or.ddit.service.iBoardService;
+
+@WebServlet("board")
+public class BoardController {
+
+	iBoardService boardService = BoardServiceImpl.getInstance();
+
+	private void doget(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("인덱스 페이지");
+
+		
+		req.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(req, resp);
+	}
+	
+
+}

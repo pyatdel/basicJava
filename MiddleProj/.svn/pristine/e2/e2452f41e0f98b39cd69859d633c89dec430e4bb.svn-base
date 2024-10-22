@@ -1,0 +1,30 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.vo.MovieVo;
+
+@WebServlet("/movieDetail.do")
+public class MovieDetailController extends HttpServlet{
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String movieNo = req.getParameter("movieNo");
+		String search = req.getParameter("search");
+		
+		MovieVo searchMovie = new MovieVo();
+		searchMovie.setMovieNo(movieNo);
+		
+		req.getRequestDispatcher("/WEB-INF/view/movieDetail.jsp").forward(req, resp);
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+	
+	}
+}

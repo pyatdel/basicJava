@@ -1,0 +1,63 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.Gson;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.service.BoardServiceImpl;
+import kr.or.ddit.service.iBoardService;
+import kr.or.ddit.vo.BoardVo;
+
+@WebServlet("/board")
+public class BoardController extends HttpServlet {
+
+    private iBoardService boardService = BoardServiceImpl.getInstance();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("BoardController: doGet 메소드 시작");
+        String action = req.getParameter("action");
+        System.out.println("BoardController: action = " + action);
+
+        if ("getList".equals(action)) {
+            handleGetList(req, resp);
+        } else {
+            // 기본 페이지 로드 로직
+            System.out.println("BoardController: 기본 페이지 로드");
+            List<BoardVo> cateList = boardService.cateList();
+            System.out.println("BoardController: cateList 크기: " + (cateList != null ? cateList.size() : "null"));
+            req.setAttribute("cateList", cateList);
+            req.getRequestDispatcher("/WEB-INF/view/index2.jsp").forward(req, resp);
+        }
+    }
+
+    private void handleGetList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("BoardController: handleGetList 메소드 시작");
+        String boardCode = req.getParameter("boardCode");
+        System.out.println("BoardController: boardCode = " + boardCode);
+
+        try {
+            List<BoardVo> boardList = boardService.boardList(boardCode);
+            System.out.println("BoardController: boardList 크기 = " + (boardList != null ? boardList.size() : "null"));
+
+            String jsonResponse = new Gson().toJson(boardList);
+            System.out.println("BoardController: JSON 응답 = " + jsonResponse);
+
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().write(jsonResponse);
+        } catch (Exception e) {
+            System.err.println("BoardController: 오류 발생 - " + e.getMessage());
+            e.printStackTrace(System.err);
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("서버 오류가 발생했습니다: " + e.getMessage());
+        }
+    }
+}

@@ -1,0 +1,57 @@
+package kr.or.ddit.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import kr.or.ddit.dao.BoardDaoImpl;
+import kr.or.ddit.dao.iBoardDao;
+import kr.or.ddit.vo.BoardVo;
+
+public class BoardServiceImpl implements iBoardService {
+
+    private static BoardServiceImpl instance;
+    private iBoardDao boardDao;
+
+    private BoardServiceImpl() {
+        boardDao = BoardDaoImpl.getInstance();
+    }
+
+    public static BoardServiceImpl getInstance() {
+        if (instance == null) {
+            instance = new BoardServiceImpl();
+        }
+        return instance;
+    }
+
+    @Override
+    public List<BoardVo> boardList(String boardCode) {
+        System.out.println("BoardServiceImpl: boardList 메소드 시작, boardCode = " + boardCode);
+        try {
+            List<BoardVo> result = boardDao.boardList(boardCode);
+            System.out.println("BoardServiceImpl: boardDao.boardList 결과 크기 = " + (result != null ? result.size() : "null"));
+            return result;
+        } catch (Exception e) {
+            System.err.println("BoardServiceImpl: 오류 발생 - " + e.getMessage());
+            e.printStackTrace(System.err);
+            throw e;
+        }
+    }
+
+    @Override
+    public BoardVo boardDetail(int board_no) {
+        return boardDao.boardDetail(board_no);
+    }
+
+    @Override
+    public List<BoardVo> boardList(int cateNo) {
+        return boardDao.boardList(cateNo);
+    }
+
+    @Override
+    public List<BoardVo> cateList() {
+        System.out.println("BoardServiceImpl: cateList() 메소드 호출");
+        List<BoardVo> result = boardDao.cateList();
+        System.out.println("BoardServiceImpl: cateList 결과 크기: " + (result != null ? result.size() : "null"));
+        return result;
+    }
+}

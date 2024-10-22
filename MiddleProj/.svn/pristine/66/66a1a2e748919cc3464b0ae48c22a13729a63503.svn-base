@@ -1,0 +1,23 @@
+package kr.or.ddit.dao;
+
+import kr.or.ddit.mybatis.MyBatisDao;
+
+public class MemberDaoImpl  extends MyBatisDao implements iMemberDao{
+
+	private static MemberDaoImpl instance;
+
+	private MemberDaoImpl() {
+
+	}
+
+	public static MemberDaoImpl getInstance() {
+		if (instance == null) {
+			instance = new MemberDaoImpl();
+
+		}
+		return instance;
+	}
+
+	
+}
+

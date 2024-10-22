@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<resultMap type="MemberVO" id="memberVo"> <!-- type은 mybatis-config에서 alias 한 것 -->
+		<result property="memNo" column="mem_no" />
+		<result property="memId" column="mem_id" />
+		<result property="memPw" column="mem_pw" />
+		<result property="memName" column="mem_name" />
+		<result property="memBirth" column="mem_birth" />
+		<result property="memPhone" column="mem_phone" />
+		<result property="memRegdate" column="mem_regdate" />
+		<result property="memGender" column="mem_gender" />
+		<result property="memCode" column="mem_code" />
+		<result property="memState" column="mem_state" />
+	</resultMap>
+	
+	<select id="login" resultType="memberVo" parameterType="memberVo" >
+		SELECT * FROM MEMBER
+		WHERE MEM_ID = #{userId}
+			  AND MEM_PW = #{userPw} 
+	</select>
+	
+		<insert id="join" parameterType="memberVo">
+	
+		INSERT INTO MEMBER
+		VALUES ((select nvl(max(mem_no),0)+1 from member),#{memId},#{memPw},#{memName},#{memBirth},#{memPhone},sysdate,#{mem_gender},"1","1")
+		
+	
+	</insert>
+	
+
+
+	
+</mapper>

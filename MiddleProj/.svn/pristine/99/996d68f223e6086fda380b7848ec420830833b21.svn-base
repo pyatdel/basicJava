@@ -1,0 +1,32 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.service.EventServiceImpl;
+import kr.or.ddit.service.iEventService;
+
+@WebServlet("/eventDetail")
+// url 수정 필요
+public class EventDetailController extends HttpServlet{
+	
+	private iEventService eventService = EventServiceImpl.getInstance();
+	
+	
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String boardNo = req.getParameter("board_no");
+		
+		
+		req.getRequestDispatcher("/WEB-INF/view/eventDetail.jsp").forward(req, resp);
+		
+	
+	}
+
+}

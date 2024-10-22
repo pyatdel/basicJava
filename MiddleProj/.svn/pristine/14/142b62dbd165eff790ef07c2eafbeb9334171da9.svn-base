@@ -1,0 +1,66 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.service.MemberServiceImpl;
+import kr.or.ddit.service.iMemberService;
+import kr.or.ddit.vo.MemberVo;
+@WebServlet("/findPw.do")
+public class FindPwcontroller extends HttpServlet{
+
+	iMemberService memberService = MemberServiceImpl.getInstance();
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		req.getRequestDispatcher("/WEB-INF/view/findPw.jsp").forward(req, resp);
+	
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		//요청 정보 받기
+		String memId = req.getParameter("memId");
+		String memName = req.getParameter("memName");
+		String memMail = req.getParameter("memMail");
+		
+		if(memId == null || memId.trim().isEmpty()|| memName == null || memName.trim().isEmpty() || memMail == null || memMail.trim().isEmpty()) {
+			
+			req.setAttribute("error", "각 항목을 모두 입력하세요.");
+			req.getRequestDispatcher("/WEB-INF/view/findPw.jsp").forward(req, resp);
+			return;
+		}
+		
+		//memberVo에 데이터 
+		MemberVo memberVo = new MemberVo();
+		memberVo.setMemId(memId);
+		memberVo.setMemName(memName);
+		memberVo.setMemMail(memMail);
+		
+		memberVo = memberService.findPw(memberVo);
+		
+		//비밀번호 일치했을 때 어떻게 진행할건지 고민
+//		if(memberVo != null) {
+//			req.setAttribute("foundId", memberVo.getMemId());
+//		}
+//		else {
+//			req.setAttribute("error", "입력한 정보의 아이디가 존재하지 않습니다.");
+//		}
+		
+		req.getRequestDispatcher("/WEB-INF/view/findId.jsp").forward(req, resp);
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	}
+}

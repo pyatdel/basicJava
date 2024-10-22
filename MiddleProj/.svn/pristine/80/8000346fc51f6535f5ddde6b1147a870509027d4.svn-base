@@ -1,0 +1,22 @@
+package kr.or.ddit.dao;
+
+import kr.or.ddit.mybatis.MyBatisDao;
+
+public class BoardDaoImpl extends MyBatisDao implements iBoardDao{
+
+	private static BoardDaoImpl instance;
+
+	private BoardDaoImpl() {
+
+	}
+
+	public static BoardDaoImpl getInstance() {
+		if (instance == null) {
+			instance = new BoardDaoImpl();
+
+		}
+		return instance;
+	}
+
+	
+}

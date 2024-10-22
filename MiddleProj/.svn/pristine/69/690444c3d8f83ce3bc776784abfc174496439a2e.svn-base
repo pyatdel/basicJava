@@ -1,0 +1,23 @@
+package kr.or.ddit.service;
+
+import kr.or.ddit.dao.MemberDaoImpl;
+import kr.or.ddit.dao.iMemberDao;
+
+public class MemberServiceImpl implements iMemberService{
+
+	private static MemberServiceImpl instance;
+
+	private MemberServiceImpl() {
+
+	}
+
+	public static MemberServiceImpl getInstance() {
+		if (instance == null) {
+			instance = new MemberServiceImpl();
+
+		}
+		return instance;
+	}
+
+	iMemberDao memberDao = MemberDaoImpl.getInstance();
+}

@@ -1,0 +1,33 @@
+package kr.or.ddit.dao;
+
+import java.util.List;
+
+import kr.or.ddit.mybatis.MyBatisDao;
+import kr.or.ddit.vo.ProductVo;
+
+public class StoreDaoImpl extends MyBatisDao implements iStoreDao {
+
+	private static StoreDaoImpl instance;
+
+	private StoreDaoImpl() {
+
+	}
+
+	public static StoreDaoImpl getInstance() {
+		if (instance == null) {
+			instance = new StoreDaoImpl();
+		}
+		return instance;
+	}
+
+	@Override
+    public List<ProductVo> getAllProducts() {
+        return selectList("store.getAllProducts");
+    }
+
+    @Override
+    public List<ProductVo> getProductsByCategory(String category) {
+        return selectList("store.getProductsByCategory", category);
+    }
+	
+}

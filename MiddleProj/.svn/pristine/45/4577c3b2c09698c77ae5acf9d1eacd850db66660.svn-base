@@ -1,0 +1,56 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	영화 상세페이지
+	<table>
+		<tr>
+			<td>${movieDetail.movieName}</td>
+		</tr>
+		<tr>
+			<td><img src="${movieDetail.moviePoster }"></td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieCompany}</td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieRelease}</td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieContent}</td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieRunningtime}</td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieLevel}</td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieState}</td>
+		</tr>
+		<tr>
+			<td><iframe src="${movie.movieTrailer}"></</iframe></td>
+		</tr>
+
+	</table>
+	
+	<!-- 찜 -->
+	
+	<!-- 찜하기 누르면 찜 테이블에 들어감 (mem no랑 movie no엮어서) -->
+
+	<!-- 리뷰 리스트 -->
+	
+	<!-- 등록 버튼 클릭시 리뷰 작성 모달창 -->
+	
+	
+	<!-- 예매하기 버튼 클릭시 예매페이지 이동 -->
+
+
+</body>
+</html>

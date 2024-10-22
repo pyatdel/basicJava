@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+
+	<select id="login" resultType="memberVo" parameterType="memberVo">
+		SELECT *
+		FROM MEMBER
+		WHERE ID = #{id}
+		AND PW = #{pw}
+	
+	</select>
+
+	<select id="getMaxMemNo" resultType="int">
+		SELECT NVL(MAX(MEM_NO),0)+1
+		FROM MEMBER
+	</select>
+	
+	
+	<insert id="insertMember" parameterType="memberVo">
+		INSERT INTO MEMBER
+		VALUES( #{mem_no},
+		#{ID},#{PW},#{NAME},SYSDATE,'N',#{JUSO},#{TELL}, #{img})
+		
+		
+	</insert>
+	
+	<select id="getMaxFileNo" resultType="int">
+		SELECT NVL(MAX(FILE_NO),0)+1, 
+		FROM ATTACH_FILE
+	
+	</select>
+	<insert id="insertFile" parameterType="attachVo">
+		INSERT INTO ATTACH_FILE
+		VALUES( #{file_no}, #{file_dorder}, #{file_path}, #{file_name}, #{file_org_name},#{file_ext},#{file_size}, sysdate)
+		
+	
+	</insert>
+	
+	<select id="getMember" resultType ="memberVo" parameterType="int">
+		SELECT * 
+		FROM MEMBER
+		WHERE MEM_NO= #{mem_no}
+	
+	</select>
+	
+	<select id="getFile" resultType="attachVo" parameterType="int">
+	
+		SELECT *
+		FROM ATTACH_FILE
+		WHERE FILE_NO = #{file_no}
+	
+	
+	</select>
+	
+	
+
+
+</mapper>

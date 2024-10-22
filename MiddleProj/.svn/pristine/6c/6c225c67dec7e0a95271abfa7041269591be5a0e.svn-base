@@ -1,0 +1,9 @@
+package kr.or.ddit.dao;
+
+import java.util.List;
+import kr.or.ddit.vo.ProductVo;
+
+public interface iStoreDao {
+    List<ProductVo> getAllProducts();
+    List<ProductVo> getProductsByCategory(String category);
+}

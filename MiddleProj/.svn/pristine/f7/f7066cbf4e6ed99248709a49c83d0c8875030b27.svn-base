@@ -1,0 +1,23 @@
+package kr.or.ddit.dao;
+
+import kr.or.ddit.mybatis.MyBatisDao;
+
+public class MovieDaoImpl  extends MyBatisDao implements iMovieDao {
+
+	private static MovieDaoImpl instance;
+
+	private MovieDaoImpl() {
+
+	}
+
+	public static MovieDaoImpl getInstance() {
+		if (instance == null) {
+			instance = new MovieDaoImpl();
+
+		}
+		return instance;
+	}
+
+
+
+}

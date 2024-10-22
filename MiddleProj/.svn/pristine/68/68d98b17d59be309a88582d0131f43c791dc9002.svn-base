@@ -1,0 +1,27 @@
+package kr.or.ddit.service;
+
+import kr.or.ddit.dao.MovieDaoImpl;
+import kr.or.ddit.dao.iMovieDao;
+
+public class MovieServiceImpl implements iMovieService{
+
+	private static MovieServiceImpl instance;
+
+	private MovieServiceImpl() {
+
+	}
+
+	public static MovieServiceImpl getInstance() {
+		if (instance == null) {
+			instance = new MovieServiceImpl();
+
+		}
+		return instance;
+	}
+	
+	iMovieDao movieDao = MovieDaoImpl.getInstance();
+
+	
+}
+
+

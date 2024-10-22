@@ -1,0 +1,19 @@
+package kr.or.ddit.api;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class test {
+	public static void main(String[] args) {
+		LocalDate now = LocalDate.now();
+//		String nowStr = now + "";
+		//String date = nowStr.replace("-", "");
+//		System.out.println(date);
+		String nowStr = now.format(DateTimeFormatter.ofPattern("yyyyMMdd")); // 현재 날짜 포맷
+		int date = Integer.parseInt(nowStr);
+		System.out.println(date);
+		
+	}
+
+	
+}

@@ -1,0 +1,20 @@
+package kr.or.ddit.service;
+
+import java.util.List;
+import kr.or.ddit.vo.ReservationVo;
+
+public interface iReservationService {
+
+
+    // 상영관의 좌석 목록 조회
+    List<ReservationVo> selectSeatsByRoom(String roomNum);
+
+    // 예약 가능한 좌석만 조회
+    List<ReservationVo> selectAvailableSeats(String seatNo);
+
+    // 좌석 예약
+    int reserveSeat(String seatNo, int movieReservationNo);
+
+    // 좌석 예약 취소
+    int cancelSeatReservation(int movieReservNo);
+}

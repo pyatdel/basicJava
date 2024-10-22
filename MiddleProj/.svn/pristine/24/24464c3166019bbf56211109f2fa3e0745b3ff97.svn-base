@@ -1,0 +1,48 @@
+package kr.or.ddit.dao;
+
+import java.util.List;
+import org.apache.ibatis.session.SqlSession;
+import kr.or.ddit.vo.ReservationVo;
+import kr.or.ddit.mybatis.MybatisUtil;
+
+public class ReservationDaoImpl implements iReservationDao{
+	
+	private SqlSession sqlSession;
+	
+	public ReservationDaoImpl() {
+		this.sqlSession = MybatisUtil.getInstance();
+	}
+	
+	@Override
+	public List<ReservationVo> selectSeatsByRoom(int roomNum) {
+		 // SQL 쿼리를 통해 해당 상영관(roomNum)의 좌석 정보를 조회
+		List<ReservationVo> seatList = sqlSession.selectList("Seat.selectSeatsByRoom", roomNum);
+		return seatList;
+	}
+
+	@Override
+	public List<ReservationVo> selectAvailableSeats(int seatNo) {
+		  List<ReservationVo> availableSeats = sqlSession.selectList("Seat.selectAvailableSeats", seatNo);
+	        return availableSeats;
+	}
+
+	@Override
+	public int reserveSeat(int seatNo, int movieResevationNo) {
+		  // 좌석을 예약 상태로 변경하는 쿼리 실행
+        SeatVo seat = new SeatVo();
+        seat.setSeatId(seatNo);
+        seat.setReservationId(reservationNo);
+        int result = sqlSession.update("Seat.reserveSeat", seat);
+        sqlSession.commit();  // 변경 사항 저장
+        return result;
+	}
+
+	@Override
+	public int cancelSeatReservation(int seatNo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	
+
+}

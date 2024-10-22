@@ -1,0 +1,49 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import com.google.gson.Gson;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.service.StoreServiceImpl;
+import kr.or.ddit.service.iStoreService;
+import kr.or.ddit.vo.ProductVo;
+
+@WebServlet("/store")
+public class StoreController extends HttpServlet {
+    private iStoreService storeService = StoreServiceImpl.getInstance();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+
+        if ("getProductList".equals(action)) {
+            handleGetProductList(req, resp);
+        } else {
+            loadStorePage(req, resp);
+        }
+    }
+
+    private void loadStorePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<ProductVo> productList = storeService.getAllProducts();
+        req.setAttribute("productList", productList);
+        req.getRequestDispatcher("/WEB-INF/views/store.jsp").forward(req, resp);
+    }
+
+    private void handleGetProductList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String category = req.getParameter("category");
+        List<ProductVo> productList = storeService.getProductsByCategory(category);
+        
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson(productList);
+        
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        resp.getWriter().write(jsonResponse);
+    }
+}

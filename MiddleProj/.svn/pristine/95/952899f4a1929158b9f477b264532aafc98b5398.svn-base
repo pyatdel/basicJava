@@ -1,0 +1,13 @@
+package kr.or.ddit.dao;
+
+import kr.or.ddit.vo.MemberVo;
+
+public interface iMemberDao {
+
+	//로그인 검증 
+	public MemberVo login(MemberVo member);
+
+	//회원 가입
+	public int join(MemberVo member);
+
+}

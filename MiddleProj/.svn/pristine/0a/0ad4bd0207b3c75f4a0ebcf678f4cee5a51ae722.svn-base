@@ -1,0 +1,139 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>게시판</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f4f4f4;
+        }
+        .board-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+        .board-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .board-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .board-nav {
+            background-color: #f8f9fa;
+            padding: 10px 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .board-nav .nav-link {
+            color: #495057;
+        }
+        .board-nav .nav-link.active {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .board-content {
+            padding: 20px;
+        }
+        .post-item {
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 0;
+            cursor: pointer;
+        }
+        .post-item:last-child {
+            border-bottom: none;
+        }
+        .post-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .post-meta {
+            font-size: 14px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="board-container">
+            <div class="board-header">
+                <h1>커뮤니티 게시판</h1>
+            </div>
+            <div class="board-nav">
+                <ul class="nav nav-pills">
+                    <c:if test="${not empty cateList}">
+                        <p>카테고리 수: ${fn:length(cateList)}</p>
+                        <c:forEach var="cate" items="${cateList}">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onclick="loadContent('${fn:toLowerCase(cate)}')">
+                                    카테고리: ${fn:toUpperCase(cate)}
+                                </a>
+                            </li>
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${empty cateList}">
+                        <p>카테고리 목록이 비어있습니다.</p>
+                    </c:if>
+                    <p>cateList의 내용: ${cateList}</p> <!-- Debugging -->
+                </ul>
+            </div>
+            <div class="board-content" id="boardContent">
+                <c:if test="${not empty boardList}">
+                    <c:forEach var="post" items="${boardList}">
+                        <div class="post-item">
+                            <div class="post-title">${post.board_title}</div>
+                            <div class="post-meta">
+                                작성일: ${fn:substring(post.board_write_date, 0, 10)} | 조회수: ${post.board_cnt}
+                            </div>
+                        </div>
+                    </c:forEach>
+                </c:if>
+                <c:if test="${empty boardList}">
+                    <p>게시글 목록이 비어있습니다.</p>
+                </c:if>
+            </div>
+        </div>
+    </div>
+    <script>
+        function loadContent(boardCode) {
+            // Ajax를 사용하여 게시글 목록을 가져오는 로직을 구현하세요.
+            // 예시: AJAX 호출 후 boardList를 업데이트하는 코드
+            fetch(`/getBoardList?boardCode=${boardCode}`)
+                .then(response => response.json())
+                .then(data => {
+                    const boardContent = document.getElementById('boardContent');
+                    boardContent.innerHTML = ''; // 기존 내용 삭제
+                    if (data.length > 0) {
+                        data.forEach(post => {
+                            boardContent.innerHTML += `
+                                <div class="post-item">
+                                    <div class="post-title">${post.board_title}</div>
+                                    <div class="post-meta">
+                                        작성일: ${post.board_write_date.substring(0, 10)} | 조회수: ${post.board_cnt}
+                                    </div>
+                                </div>`;
+                        });
+                    } else {
+                        boardContent.innerHTML = '<p>게시글 목록이 비어있습니다.</p>'s;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching board list:', error);
+                });
+        }
+    </script>
+</body>
+</html>

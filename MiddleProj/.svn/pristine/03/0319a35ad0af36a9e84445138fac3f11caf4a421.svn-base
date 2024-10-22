@@ -1,0 +1,65 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import com.google.gson.Gson;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.service.BoardServiceImpl;
+import kr.or.ddit.service.iBoardService;
+import kr.or.ddit.vo.BoardVo;
+
+@WebServlet("/board")
+public class BoardController extends HttpServlet {
+    private iBoardService boardService = BoardServiceImpl.getInstance();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        System.out.println("BoardController: action = " + action);
+
+        if ("getList".equals(action)) {
+            handleGetList(req, resp);
+        } else {
+            loadDefaultPage(req, resp);
+        }
+    }
+
+    private void loadDefaultPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<BoardVo> cateList = boardService.cateList();
+        
+        List<BoardVo> allBoards = boardService.boardList(null);  // null을 전달하여 모든 게시글 가져오기
+        System.out.println("BoardController: cateList size = " + (cateList != null ? cateList.size() : "null"));
+        System.out.println("BoardController: allBoards size = " + (allBoards != null ? allBoards.size() : "null"));
+        req.setAttribute("categoryList", cateList);
+        req.setAttribute("boardList", allBoards);
+        req.getRequestDispatcher("/WEB-INF/view/index2.jsp").forward(req, resp);
+    }
+
+    private void handleGetList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String boardCode = req.getParameter("boardCode");
+        System.out.println("BoardController: handleGetList called with boardCode = " + boardCode);
+
+        try {
+            List<BoardVo> boardList = boardService.boardList(boardCode);
+            System.out.println("BoardController: boardList size = " + (boardList != null ? boardList.size() : "null"));
+
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            
+            String jsonResponse = new Gson().toJson(boardList);
+            System.out.println("BoardController: JSON response = " + jsonResponse);
+            resp.getWriter().write(jsonResponse);
+        } catch (Exception e) {
+            System.err.println("BoardController: Error occurred - " + e.getMessage());
+            e.printStackTrace();
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("{\"error\": \"서버 오류가 발생했습니다.\"}");
+        }
+    }
+}

@@ -1,0 +1,233 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<c:set var='contextPath' value='${pageContext.request.contextPath}'></c:set>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+
+<style>
+.modal {
+	position: fixed;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	z-index: 1000;
+}
+
+.modal-body {
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	width: 400px;
+	max-width: 90%;
+	text-align: left;
+}
+
+.modal-body h2 {
+	margin-bottom: 15px;
+}
+
+.modal-body div {
+	margin-bottom: 15px;
+}
+
+.modal-body label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.modal-body input[type="text"], .modal-body textarea {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 14px;
+}
+
+.modal-body input[type="button"] {
+	background-color: #28a745;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.modal-body input[type="button"]:hover {
+	background-color: #218838;
+}
+
+.close-button {
+	text-align: center;
+	color: #007bff;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+.close-button:hover {
+	text-decoration: underline;
+}
+</style>
+
+
+<body>
+	영화 상세페이지
+	<table>
+		<tr>
+			<td>${movieDetail.movieName}</td>
+		</tr>
+		<tr>
+			<td><img src="${movieDetail.moviePoster }"></td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieCompany}</td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieRelease}</td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieContent}</td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieRunningtime}</td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieLevel}</td>
+		</tr>
+		<tr>
+			<td>${movieDetail.movieState}</td>
+		</tr>
+		<tr>
+			<td><iframe src="${movie.movieTrailer}"></</iframe></td>
+		</tr>
+
+	</table>
+
+	<!-- 찜 -->
+
+	<!-- 찜하기 누르면 찜 테이블에 들어감 (mem no랑 movie no엮어서) -->
+
+
+	<!-- 리뷰 리스트 -->
+	<table>
+		<tr>
+			<th>리뷰 좋아요</th>
+			<th>내용</th>
+			<th>날짜</th>
+			<th>회원아이디</th>
+			<th>영화 제목</th>
+			<th>평점</th>
+
+		</tr>
+		<c:forEach var="review" items="${reviewList}">
+			<tr>
+				<input type="hidden" name="reviewCode" value="${review.reviewCode}">
+				<td>${review.reviewLike}</td>
+				<td>${review.reviewContent}</td>
+				<td>${review.reviewDate}</td>
+				<td>${review.memName}</td>
+				<td>${review.movieName}</td>
+				<td>${review.reviewStar}</td>
+				
+				<!-- 작성자 아이디랑 내 로그인 세션 아이디랑 같으면 수정, 삭제 버튼 보이게 -->
+				<c:choose>
+					<c:when test="">
+					</c:when>
+					
+					<c:otherwise>
+					</c:otherwise>
+				</c:choose>
+			</tr>
+		</c:forEach>
+
+	</table>
+
+	<div class="modal" style="display: none;">
+		<div class="modal-body">
+			<h2>리뷰 작성하기</h2>
+			<div>
+				<label for="reviewTitle">제목</label> <input type="text"
+					id="reviewTitle" placeholder="리뷰 제목을 입력하세요">
+			</div>
+			<div>
+				<label for="reviewContent">내용</label>
+				<textarea id="reviewContent" placeholder="리뷰 내용을 입력하세요"></textarea>
+			</div>
+			<div>
+				<input type="button" value="등록" onclick="submitReview()">
+			</div>
+			<div class="close-button" onclick="closeModal()">닫기</div>
+		</div>
+	</div>
+
+	<button class="btn-open-modal">리뷰 작성하기</button>
+
+	</div>
+
+	<!-- 예매하기 버튼 클릭시 예매페이지 이동 -->
+	<button onclick="buyMov()">예매하기</button>
+
+
+</body>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+	crossorigin="anonymous"></script>
+<script>
+const modal = document.querySelector('.modal');
+const btnOpenModal = document.querySelector('.btn-open-modal');
+
+// 모달 열기
+btnOpenModal.addEventListener("click", () => {
+    modal.style.display = "flex";
+});
+
+// 모달 외부 클릭 시 닫기
+modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
+// 모달 닫기 함수
+function closeModal() {
+    modal.style.display = "none";
+}
+
+// 리뷰 등록 함수 (예시)
+function submitReview() {
+	/*등록버튼 눌렀을 때 reviewList에 추가해야됨*/
+	
+	
+	/*페이징 처리*/
+	
+	
+	
+    const title = document.getElementById("reviewTitle").value;
+    const content = document.getElementById("reviewContent").value;
+
+    // 여기에 리뷰를 등록하는 로직을 추가
+    console.log("제목:", title);
+    console.log("내용:", content);
+
+    closeModal(); // 리뷰 등록 후 모달 닫기
+}
+
+function buyMov(){
+	location.href="${contextPath}/buyMovie.do";
+}
+
+</script>
+
+</html>

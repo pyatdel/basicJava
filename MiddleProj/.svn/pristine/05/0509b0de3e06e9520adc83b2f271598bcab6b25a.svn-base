@@ -1,0 +1,33 @@
+package kr.or.ddit.service;
+
+import java.util.List;
+
+import kr.or.ddit.vo.ReservationVo;
+
+public class ReservationServiceImpl implements iReservationService {
+	private static ReservationServiceImpl instance;
+
+	private ReservationServiceImpl() {
+
+	}
+
+	public static ReservationServiceImpl getInstance() {
+
+		if (instance == null) {
+			instance = new ReservationServiceImpl();
+		}
+		return instance;
+	}
+
+	@Override
+	public List<ReservationVo> selectSpotByReg(String regNo) {
+		return null;
+	}
+	
+	@Override
+	public List<ReservationVo> selectSeatsBySch(String schNo) {
+		return null;
+	}
+
+
+}

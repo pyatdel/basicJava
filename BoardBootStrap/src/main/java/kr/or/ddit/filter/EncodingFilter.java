@@ -25,14 +25,10 @@ public class EncodingFilter implements Filter{
 	
 	BoardService boardSerice = BoardServiceImpl.getInstacne();
 	
-	
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
-		
-		
-		
-		
+
 		if(req.getServletContext().getAttribute("cateList") !=null) {
 			
 		}
@@ -41,7 +37,6 @@ public class EncodingFilter implements Filter{
 			System.out.println("cateList => "+cateList);
 			req.getServletContext().setAttribute("cateList", cateList);
 		}
-		
 		
 		req.setCharacterEncoding(enc);
 		resp.setCharacterEncoding(enc);

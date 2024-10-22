@@ -1,0 +1,12 @@
+package kr.or.ddit.controller;
+
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import kr.or.ddit.service.ReservationServiceImpl;
+import kr.or.ddit.service.iReservationService;
+
+@WebServlet("/reservation")
+public class ReservationController extends HttpServlet {
+	iReservationService reservationService = ReservationServiceImpl.getInstance();
+
+}

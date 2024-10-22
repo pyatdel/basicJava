@@ -1,0 +1,73 @@
+package kr.or.ddit.controller;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.google.gson.Gson;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.or.ddit.service.BoardServiceImpl;
+import kr.or.ddit.service.iBoardService;
+import kr.or.ddit.vo.BoardVo;
+
+@WebServlet("/board")
+public class BoardController extends HttpServlet {
+
+    iBoardService boardService = BoardServiceImpl.getInstance();
+    Gson gson = new Gson();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        System.out.println("Received action: " + action);
+        
+        if ("getList".equals(action)) {
+            handleGetList(req, resp);
+        } else {
+            handleDefault(req, resp);
+        }
+    }
+
+    private void handleGetList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String boardCode = req.getParameter("boardCode");
+        System.out.println("Requested board code: " + boardCode);
+
+        List<BoardVo> boardList = boardService.boardList(0); // 모든 게시글 가져오기
+        System.out.println("Total boards retrieved: " + boardList.size());
+
+        // 각 게시글의 board_code 출력
+        for (BoardVo board : boardList) {
+            System.out.println("Board: " + board.getBoard_no() + ", Code: " + board.getBoard_code());
+        }
+
+        if (boardCode != null && !boardCode.isEmpty()) {
+            boardList = boardList.stream()
+                .filter(board -> {
+                    boolean match = boardCode.equals(board.getBoard_code());
+                    System.out.println("Checking board " + board.getBoard_no() + ": requested " + boardCode + " vs actual " + board.getBoard_code() + " - Match: " + match);
+                    return match;
+                })
+                .collect(Collectors.toList());
+        }
+        System.out.println("Filtered boards: " + boardList.size());
+
+        String jsonResponse = gson.toJson(boardList);
+        System.out.println("JSON response: " + jsonResponse);
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        resp.getWriter().write(jsonResponse);
+    }
+
+    private void handleDefault(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<BoardVo> cateList = boardService.cateList();
+        req.setAttribute("cateList", cateList);
+
+        req.getRequestDispatcher("/WEB-INF/view/index2.jsp").forward(req, resp);
+    }
+}

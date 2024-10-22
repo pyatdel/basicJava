@@ -1,0 +1,23 @@
+package kr.or.ddit.service;
+
+import kr.or.ddit.dao.BoardDaoImpl;
+import kr.or.ddit.dao.iBoardDao;
+
+public class BoardServiceImpl implements iBoardService{
+
+	private static BoardServiceImpl instance;
+
+	private BoardServiceImpl() {
+
+	}
+
+	public static BoardServiceImpl getInstance() {
+		if (instance == null) {
+			instance = new BoardServiceImpl();
+
+		}
+		return instance;
+	}
+
+	iBoardDao boardDao = BoardDaoImpl.getInstance();
+}

@@ -1,0 +1,54 @@
+package kr.or.ddit.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import kr.or.ddit.dao.BoardDaoImpl;
+import kr.or.ddit.dao.iBoardDao;
+import kr.or.ddit.vo.BoardVo;
+
+public class BoardServiceImpl implements iBoardService {
+
+    private static BoardServiceImpl instance;
+    private iBoardDao boardDao;
+
+    private BoardServiceImpl() {
+        boardDao = BoardDaoImpl.getInstance();
+    }
+
+    public static BoardServiceImpl getInstance() {
+        if (instance == null) {
+            instance = new BoardServiceImpl();
+        }
+        return instance;
+    }
+
+    public List<BoardVo> boardList(String boardCode) {
+        System.out.println("BoardServiceImpl: boardList called with boardCode = " + boardCode);
+        List<BoardVo> result = boardDao.boardList(boardCode);
+        System.out.println("BoardServiceImpl: boardList result size = " + (result != null ? result.size() : "null"));
+        return result;
+    }
+
+    @Override
+    public BoardVo boardDetail(int board_no) {
+        return boardDao.boardDetail(board_no);
+    }
+
+    @Override
+    public List<BoardVo> boardList(int cateNo) {
+        return boardDao.boardList(cateNo);
+    }
+
+    @Override
+    public List<BoardVo> cateList() {
+        return boardDao.cateList();
+    }
+
+    @Override
+    public BoardVo getBoard(String boardNo) {
+        return boardDao.getBoard(boardNo);
+    }
+    
+    
+}

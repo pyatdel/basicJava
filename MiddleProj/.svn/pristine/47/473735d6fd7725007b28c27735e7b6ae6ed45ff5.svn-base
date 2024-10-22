@@ -1,0 +1,32 @@
+package kr.or.ddit.service;
+
+import java.util.List;
+
+import kr.or.ddit.dao.ReviewDaoImpl;
+import kr.or.ddit.dao.iReviewDao;
+import kr.or.ddit.vo.ReviewVo;
+
+public class ReviewServiceImpl implements iReviewService{
+
+	private static ReviewServiceImpl instance;
+
+	private ReviewServiceImpl() {
+
+	}
+
+	public static ReviewServiceImpl getInstance() {
+		if (instance == null) {
+			instance = new ReviewServiceImpl();
+
+		}
+		return instance;
+	}
+
+	iReviewDao reviewDao = ReviewDaoImpl.getInstance();
+
+	@Override
+	public List<ReviewVo> reviewList(String movie) {
+		return reviewDao.reviewList(movie);
+	}
+
+}

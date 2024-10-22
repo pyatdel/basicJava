@@ -1,0 +1,241 @@
+package kr.or.ddit.api;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import kr.or.ddit.service.MovieServiceImpl;
+import kr.or.ddit.service.iMovieService;
+import kr.or.ddit.util.ScanUtil;
+import kr.or.ddit.vo.MovieVo;
+
+public class ApiExplorer {
+	public static void main(String[] args) throws Exception {
+		ApiExplorer ae = new ApiExplorer();
+		ae.getKMDBAPI();
+//		ae.selectMovie();
+	}
+
+	iMovieService movieService = MovieServiceImpl.getInstance();
+
+	public void selectMovie() {
+
+		// 영화 DB에 있는지 조회
+		List<MovieVo> movieList = movieService.movieList();
+		for (MovieVo movieVo : movieList) {
+			System.out.println(movieVo);
+		}
+		String title = ScanUtil.nextLine("조회할 영화 제목 입력: ");
+		MovieVo selectMovie = null;
+		for (MovieVo movieVo : movieList) {
+			String movieName = movieVo.getMovieName();
+			if (movieName.equals(title)) {
+				selectMovie = movieVo;
+			}
+		}
+
+	}
+
+	// 모든 영화정보를 kmdb에서 박스오피스는 누적 관객수로
+	// 상영중은 개봉시작일로부터 2주간
+	public void getKMDBAPI() throws Exception {
+		StringBuilder urlBuilder = new StringBuilder("http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2"); 
+		urlBuilder.append("&" + URLEncoder.encode("ServiceKey", "UTF-8") + "="+ URLEncoder.encode("FFL9003M35F6J0562575", "utf-8")); /* Service Key */
+		urlBuilder.append("&" + URLEncoder.encode("detail", "UTF-8") + "=" + URLEncoder.encode("Y", "utf-8"));
+		urlBuilder.append("&" + URLEncoder.encode("listCount", "UTF-8") + "=" + URLEncoder.encode("500", "utf-8"));
+		
+		URL url = new URL(urlBuilder.toString());
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Content-type", "application/json");
+//		System.out.println("Response code: "+conn.getResponseCode()); 
+
+		BufferedReader rd;
+		if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		} else {
+			rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+		}
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while ((line = rd.readLine()) != null) {
+			sb.append(line);
+		}
+		rd.close();
+		conn.disconnect();
+
+//		System.out.println(sb.toString());
+
+        parseMovies(sb.toString()); // 영화 목록 파싱 시 기존 영화 목록 전달
+    }
+
+	
+
+	public void parseMovies(String jsonString) {
+	    Gson gson = new Gson();
+	    JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+	    JsonArray dataArray = jsonObject.getAsJsonArray("Data");
+		
+
+	    // Data 배열을 반복
+	    for (int i = 0; i < dataArray.size(); i++) {
+	        JsonObject dataItem = dataArray.get(i).getAsJsonObject();
+	        JsonArray resultArray = dataItem.getAsJsonArray("Result");
+
+	        // Result 배열을 반복
+	        for (int j = 0; j < resultArray.size(); j++) {
+	            JsonObject movie = resultArray.get(j).getAsJsonObject();
+
+	            // 영화 정보 추출
+	            String movieCode = movie.get("DOCID").getAsString();
+	            
+	            
+	            //db에 있는지 확인
+	            MovieVo movieNo= new MovieVo();
+	            movieNo.setMovieNo(movieCode);
+	            
+	            if(movieService.getMovie(movieNo)!=null) {
+	            	continue;
+	            }
+	            
+	            String title = movie.get("title").getAsString();
+	            if(title.contains("!HE")|| title.contains("!HS")) {
+	            	title = title.replace("!HS", "").replace("!HE","").trim();
+	            }
+	            else {
+	            	title=title.trim();
+	            }
+//	            String genre = movie.get("genre").getAsString();
+	            
+	            //String director = movie.getAsJsonObject("directors").getAsJsonArray("director").get(0).getAsJsonObject().get("directorNm").getAsString(); // 첫 번째 감독 이름
+//	            String[] companys = movie.get("company").getAsString().split(",");
+//	            String company="";
+//	            for(int k=0;k<companys.length;k++) {
+//	            	company+=companys[k];
+//	            	if(k!=companys.length-1) company+="," ;
+//	            }
+	            String company = movie.get("company").getAsString();
+	            
+	            
+	            int releaseDate=0;
+	            String releaseDateStr = movie.get("repRlsDate").getAsString();
+	            
+	            LocalDate now = LocalDate.now();
+	            String nowStr = now.format(DateTimeFormatter.ofPattern("yyyyMMdd")); // 현재 날짜 포맷
+	    		int date = Integer.parseInt(nowStr);
+	    		 
+	            if(!releaseDateStr.isEmpty()) {
+	            	if(releaseDateStr.substring(6).equals("00")) {
+	            		releaseDateStr = releaseDateStr.substring(0,6)+"01";
+	            	}
+	            	releaseDate=Integer.parseInt(releaseDateStr);
+	            } 
+//	            else {
+//	                // 오류 처리 또는 기본값 설정
+//	                System.out.println("Invalid release date: " + releaseDateStr);
+//	                continue; // 이 영화를 건너뛰기
+//	            }
+	            
+	            String poster = movie.get("posters").getAsString().split("\\|")[0];
+	           
+	            String country=movie.get("nation").getAsString();
+	            String content = movie.getAsJsonObject("plots").getAsJsonArray("plot").get(0).getAsJsonObject().get("plotText").getAsString();
+	            int runningTime = 0;
+	            String runtimeStr = movie.get("runtime").getAsString();
+	            if(!runtimeStr.isEmpty()) {
+	            	runningTime=Integer.parseInt(runtimeStr);
+	            }
+	            
+	            String trailer = movie.getAsJsonObject("vods").getAsJsonArray("vod").get(0).getAsJsonObject().get("vodUrl").getAsString();
+	            String level = movie.getAsJsonObject("ratings").getAsJsonArray("rating").get(0).getAsJsonObject().get("ratingGrade").getAsString();
+	            int boxoffice=0;
+	            String boxofficeStr = movie.getAsJsonArray("stat").get(0).getAsJsonObject().get("audiAcc").getAsString();
+	            if(!boxofficeStr.isEmpty()) {
+	            	boxoffice=Integer.parseInt(boxofficeStr);
+	            }
+	           
+//	             출력 (혹은 DB에 저장하는 로직)
+	            System.out.println("movieCode: "+ movieCode);
+	            System.out.println("Title: " + title);
+	            System.out.println("poster: " +poster);
+	            System.out.println("company: " +company);
+	            System.out.println("releaseDate: " +releaseDate);
+	            System.out.println("country: " +country);
+	            System.out.println("content: " +content);
+	            System.out.println("runningTime: " +runningTime);
+	            System.out.println("trailer: " +trailer);
+	            System.out.println("level: " +level);
+	            System.out.println("boxoffice: " + boxoffice);
+	            
+//	            System.out.println("Genre: " + genre);
+	            System.out.println("---------------------------");
+	            
+	            
+	            
+	            MovieVo movieVo = new MovieVo();
+	            
+	            
+	    		if(releaseDate==0) {
+	    			movieVo.setMovieState("상영안함");
+	    		}
+	    		else {
+	    			LocalDate releaseLocalDate = LocalDate.parse(releaseDateStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
+	    			LocalDate compareDate = releaseLocalDate.plusDays(14);
+		    		
+		    		 if(releaseLocalDate.isAfter(now)) {
+			            movieVo.setMovieState("개봉예정");
+			         }
+			         else if(now.isAfter(releaseLocalDate) && now.isBefore(compareDate)) {
+			            // 개봉 날짜가 현재 날짜보다 14일 전인지 확인
+			            movieVo.setMovieState("상영중");
+			          }
+			         else {
+			        	 movieVo.setMovieState("상영안함");
+			         }
+	    		}
+	    		
+	    		
+	    		
+	    		
+	    		
+	    		movieVo.setMovieNo(movieCode);
+	    		movieVo.setMovieName(title);
+	    		movieVo.setMoviePoster(poster);
+	    		movieVo.setMovieCompany(company);
+	            movieVo.setMovieRelease(releaseDate);
+	            movieVo.setMovieCountry(country);
+	            movieVo.setMovieContent(content);
+	            movieVo.setMovieRunningtime(runningTime);
+	            if(trailer=="") {
+	            	movieVo.setMovieTrailer("");
+	            }
+	            else {
+	            	movieVo.setMovieTrailer(trailer);
+	            }
+	            movieVo.setMovieLevel(level);
+	            movieVo.setBoxoffice(boxoffice);
+	            
+	            System.out.println("movieVO: "+movieVo);
+	            movieService.insertMovie(movieVo);
+	            
+	            
+//	            List movies = movieService.movieList();
+//	            System.out.println(movies);
+	             
+	        }
+	       
+	    }
+	}
+
+}

@@ -1,0 +1,72 @@
+package kr.or.ddit.dao;
+
+import java.util.List;
+
+import kr.or.ddit.mybatis.MyBatisDao;
+import kr.or.ddit.vo.BoxofficeVo;
+import kr.or.ddit.vo.MovieVo;
+
+public class MovieDaoImpl  extends MyBatisDao implements iMovieDao {
+
+	private static MovieDaoImpl instance;
+
+	private MovieDaoImpl() {
+
+	}
+
+	public static MovieDaoImpl getInstance() {
+		if (instance == null) {
+			instance = new MovieDaoImpl();
+
+		}
+		return instance;
+	}
+
+	@Override
+	public int insertMovie(MovieVo movieVo) {
+		return insert("movie.insertMovie",movieVo);
+	}
+
+	@Override
+	public List<MovieVo> movieList() {
+		return selectList("movie.movieList");
+	}
+
+	@Override
+	public MovieVo getMovie(MovieVo movieNo) {
+		return selectOne("movie.getMovie", movieNo);
+	}
+
+	@Override
+	public MovieVo getMovieName(MovieVo movieName) {
+		return selectOne("movie.getMovieName", movieName);
+	}
+
+	@Override
+	public int insertBox(BoxofficeVo boxVo) {
+		return insert("movie.insertbox",boxVo);
+	}
+
+	@Override
+	public MovieVo getMovieNameRelease(MovieVo movie) {
+		return selectOne("movie.getMovieNameRelease",movie);
+	}
+
+	@Override
+	public List<BoxofficeVo> boxList() {
+		return selectList("movie.boxList");
+	}
+
+	@Override
+	public List<BoxofficeVo> boxInfo() {
+		return selectList("movie.boxInfo");
+	}
+
+	@Override
+	public BoxofficeVo boxOfficeExists(String box) {
+		return selectOne("movie.boxOfficeExists", box);
+	}
+
+
+
+}
